@@ -37,7 +37,7 @@ require("./routes/api-routes.js")(app);
 //Sync sequelize models then start Express.
 db.sequelize.sync(
 {
-    //force: true //Use this only to wipe the database clean!
+    force: true //Use this only to wipe the database clean!
 })
 .then(function()
 {
