@@ -1,23 +1,20 @@
 //Creating our survey model
 module.exports = function(sequelize, DataTypes)
 {
-    let SurveyResponse = sequelize.define("SurveyResponse", {});
+    let SurveyResponse = sequelize.define("SurveyResponse",
+    {
+        username:
+        {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
+    });
 
     SurveyResponse.associate = function(models)
     {
         SurveyResponse.belongsTo(models.SurveyChoice,
         {
-            foreignKey:
-            {
-                allowNull: false
-            }
-        });
-    };
-
-    SurveyResponse.associate = function(models)
-    {
-        SurveyResponse.belongsTo(models.User,
-        {
+            onDelete: "cascade",
             foreignKey:
             {
                 allowNull: false

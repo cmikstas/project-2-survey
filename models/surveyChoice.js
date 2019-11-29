@@ -86,22 +86,23 @@ module.exports = function(sequelize, DataTypes)
 
     SurveyChoice.associate = function(models)
     {
+        SurveyChoice.hasMany(models.SurveyResponse,
+        {
+            onDelete: "cascade"
+        });
+    }
+
+    SurveyChoice.associate = function(models)
+    {
         SurveyChoice.belongsTo(models.SurveyQuestion,
         {
+            onDelete: "cascade",
             foreignKey:
             {
                 allowNull: false
             }
         });
     };
-
-    SurveyChoice.associate = function(models)
-    {
-        SurveyChoice.hasMany(models.SurveyResponse,
-        {
-            onDelete: "cascade"
-        });
-    }
 
     return SurveyChoice; 
 };

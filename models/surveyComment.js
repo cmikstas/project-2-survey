@@ -7,6 +7,12 @@ module.exports = function(sequelize, DataTypes)
         {
             type: DataTypes.STRING,
             allowNull: false
+        },
+
+        username:
+        {
+            type: DataTypes.STRING,
+            allowNull: false,
         }
     });
 
@@ -14,17 +20,7 @@ module.exports = function(sequelize, DataTypes)
     {
         SurveyComment.belongsTo(models.Survey,
         {
-            foreignKey:
-            {
-                allowNull: false
-            }
-        });
-    };
-
-    SurveyComment.associate = function(models)
-    {
-        SurveyComment.belongsTo(models.User,
-        {
+            onDelete: "cascade",
             foreignKey:
             {
                 allowNull: false

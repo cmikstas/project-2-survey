@@ -12,20 +12,21 @@ module.exports = function(sequelize, DataTypes)
 
     SurveyQuestion.associate = function(models)
     {
-        SurveyQuestion.belongsTo(models.Survey,
+        SurveyQuestion.hasMany(models.SurveyChoice,
         {
-            foreignKey:
-            {
-                allowNull: false
-            }
+            onDelete: "cascade"
         });
     };
 
     SurveyQuestion.associate = function(models)
     {
-        SurveyQuestion.hasMany(models.SurveyChoice,
+        SurveyQuestion.belongsTo(models.Survey,
         {
-            onDelete: "cascade"
+            onDelete: "cascade",
+            foreignKey:
+            {
+                allowNull: false
+            }
         });
     };
 
