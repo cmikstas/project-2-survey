@@ -17,7 +17,8 @@ module.exports = function(app)
         // If the user already has an account send them to the members page
         if (req.user)
         {
-            res.render("home");
+            let hbsObject = { user: req.user.username };
+            res.render("home", hbsObject);
         }
         else
         {
@@ -30,7 +31,8 @@ module.exports = function(app)
         // If the user already has an account send them to the members page
         if (req.user)
         {
-            res.render("makeSurvey");
+            let hbsObject = { user: req.user.username };
+            res.render("makeSurvey", hbsObject);
         }
         else
         {
@@ -43,7 +45,8 @@ module.exports = function(app)
         // If the user already has an account send them to the members page
         if (req.user)
         {
-            res.render("takeSurvey");
+            let hbsObject = { user: req.user.username };
+            res.render("takeSurvey", hbsObject);
         }
         else
         {
@@ -56,7 +59,8 @@ module.exports = function(app)
         // If the user already has an account send them to the members page
         if (req.user)
         {
-            res.render("viewSurvey");
+            let hbsObject = { user: req.user.username };
+            res.render("viewSurvey", hbsObject);
         }
         else
         {
@@ -69,7 +73,8 @@ module.exports = function(app)
         // If the user already has an account send them to the members page
         if (req.user)
         {
-            res.render("usersettings");
+            let hbsObject = { user: req.user.username };
+            res.render("usersettings", hbsObject);
         }
         else
         {

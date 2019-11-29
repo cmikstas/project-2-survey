@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes)
     {
         DistributionList.belongsTo(models.User,
         {
+            onDelete: "cascade",
             foreignKey:
             {
                 allowNull: false

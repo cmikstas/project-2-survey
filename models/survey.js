@@ -24,17 +24,6 @@ module.exports = function(sequelize, DataTypes)
 
     Survey.associate = function(models)
     {
-        Survey.belongsTo(models.User,
-        {
-            foreignKey:
-            {
-                allowNull: false
-            }
-        });
-    };
-
-    Survey.associate = function(models)
-    {
         Survey.hasMany(models.SurveyTaker,
         {
             onDelete: "cascade"
@@ -48,12 +37,24 @@ module.exports = function(sequelize, DataTypes)
             onDelete: "cascade"
         });
     };
-
+    
     Survey.associate = function(models)
     {
         Survey.hasMany(models.SurveyComment,
         {
             onDelete: "cascade"
+        });
+    };
+
+    Survey.associate = function(models)
+    {
+        Survey.belongsTo(models.User,
+        {
+            onDelete: "cascade",
+            foreignKey:
+            {
+                allowNull: false
+            }
         });
     };
     

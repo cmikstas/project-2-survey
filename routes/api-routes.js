@@ -32,9 +32,12 @@ module.exports = function(app)
     {
         db.User.create(
         {
-            username: req.body.username,
-            email:    req.body.email,
-            password: req.body.password
+            username:           req.body.username,
+            email:              req.body.email,
+            password:           req.body.password,
+            allowNotifications: true,
+            surveyCount:        0,
+            unreadSurveys:      0
         })
         .then(function()
         {

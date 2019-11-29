@@ -42,7 +42,12 @@ module.exports = function(sequelize, DataTypes)
         surveyCount:
         {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            defaultValue: 0
+        },
+
+        unreadSurveys:
+        {
+            type: DataTypes.INTEGER,
             defaultValue: 0
         }
     });
@@ -50,30 +55,6 @@ module.exports = function(sequelize, DataTypes)
     User.associate = function(models)
     {
         User.hasMany(models.Survey,
-        {
-            onDelete: "cascade"
-        });
-    };
-
-    User.associate = function(models)
-    {
-        User.hasMany(models.SurveyTaker,
-        {
-            onDelete: "cascade"
-        });
-    };
-
-    User.associate = function(models)
-    {
-        User.hasMany(models.SurveyResponse,
-        {
-            onDelete: "cascade"
-        });
-    };
-
-    User.associate = function(models)
-    {
-        User.hasMany(models.SurveyComment,
         {
             onDelete: "cascade"
         });
