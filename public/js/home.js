@@ -90,7 +90,7 @@ let showSurveys = function()
                             //Send the DELETE request.
                             $.ajax("/api/deletesurveytaker/" + surveyTakerId,
                             {
-                                type: "DELETE"
+                                type: "DELETE" 
                             })
                             .then(function()
                             {
