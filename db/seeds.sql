@@ -11,10 +11,10 @@ INSERT INTO surveys (surveyTitle, startTime, stopTime, createdAt, updatedAt, Use
 
 -- Create active surveys.
 INSERT INTO surveys (surveyTitle, startTime, stopTime, createdAt, updatedAt, UserId) VALUES
-('Events for the night...', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 1 HOUR, NOW(), NOW(), 3),
-('What else should we do?', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 1 HOUR, NOW(), NOW(), 3),
-('Yet another survey', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 1 HOUR, NOW(), NOW(), 1),
-('I love lamp', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 1 MINUTE, NOW(), NOW(), 4);
+('Events for the night...', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 30 MINUTE, NOW(), NOW(), 3),
+('What else should we do?', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 45 SECOND, NOW(), NOW(), 3),
+('Yet another survey', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 90 SECOND, NOW(), NOW(), 1),
+('I love lamp', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 60 SECOND, NOW(), NOW(), 4);
 
 -- Create expired surveys.
 INSERT INTO surveys (surveyTitle, startTime, stopTime, createdAt, updatedAt, UserId) VALUES

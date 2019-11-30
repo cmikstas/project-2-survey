@@ -18,11 +18,13 @@ let showSurveys = function()
             for(let i = 0; i < userSurveys.length; i++)
             {
                 //Get the relevant data from the survey object.
-                let startTime   = userSurveys[i].Survey.startTime;
-                let endTime     = userSurveys[i].Survey.stopTime;
-                let startMoment = moment(startTime, "YYYY-MM-DD hh:mm:ss");
-                let endMoment   = moment(endTime,   "YYYY-MM-DD hh:mm:ss");
-                let thisMoment  = moment();
+                let surveyId      = userSurveys[i].id;
+                let surveyTakerId = userSurveys[i].SurveyId;
+                let startTime     = userSurveys[i].Survey.startTime;
+                let endTime       = userSurveys[i].Survey.stopTime;
+                let startMoment   = moment(startTime, "YYYY-MM-DD hh:mm:ss");
+                let endMoment     = moment(endTime,   "YYYY-MM-DD hh:mm:ss");
+                let thisMoment    = moment();
 
                 //Only display the survey if it is active.
                 if(endMoment > thisMoment && startMoment < thisMoment)
@@ -32,6 +34,7 @@ let showSurveys = function()
                     let isRead = userSurveys[i].isRead;
 
                     let surveyDiv = $("<div>");
+                    surveyDiv.attr("id", "survey-div" + surveyTakerId);
                     surveyDiv.addClass("survey-div");
                     surveyDiv.append("<div class=\"survey-title\">" + title + "</div>");
 
@@ -62,10 +65,42 @@ let showSurveys = function()
                     surveyBtn.addClass("survey-btn btn btn-primary");
                     surveyDiv.append(surveyBtn);
 
+                    surveyBtn.on("click", function()
+                    {
+                        // Send the PUT request.
+                        $.ajax("/api/markasread/" + surveyTakerId,
+                        {
+                            type: "PUT"
+                        }).then(function()
+                        {
+                            if(debug)console.log("Entered survey: " + surveyId);
+                            window.location.replace("/takesurvey/" +  surveyId);
+                        });
+                    })
+
                     let deleteBtn = $("<button>");
                     deleteBtn.append("Delete");
                     deleteBtn.addClass("survey-btn btn btn-danger");
                     surveyDiv.append(deleteBtn);
+
+                    deleteBtn.on("click", function()
+                    {
+                        if (confirm("Are you sure you want to remove this survey from your queue?"))
+                        {
+                            //Send the DELETE request.
+                            $.ajax("/api/deletesurveytaker/" + surveyTakerId,
+                            {
+                                type: "DELETE"
+                            })
+                            .then(function()
+                            {
+                                userSurveys.splice(i, 1); //Keep artifacts from refreshing to the page.
+                                $("#survey-div" + surveyTakerId).remove();
+                                console.log(surveyDiv);
+                                if(debug)console.log("deleted survey taker: " + surveyTakerId);
+                            });
+                        }
+                    })
 
                     if(!isRead)
                     {
