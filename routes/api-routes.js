@@ -9,9 +9,91 @@ module.exports = function(app)
 {
     /****************************** Add additional API routes here. ******************************/
 
+    //Get all the surveys that the specified user is a part of.
+    app.get("/api/usersurveys/:username", isAuthenticated, function(req, res)
+    {
+        if (req.user)
+        {
+            //Get all the surveys the current user belongs to.
+            db.SurveyTaker.findAll(
+            {
+                where:
+                {
+                    Username: req.user.username
+                },
+                include: 
+                [{
+                    //Get the survey description for each survey.
+                    model: db.Survey,
+                    include:
+                    [{
+                        //Get the owner of the survey.
+                        model: db.User,
+                        attributes: ["username", "id"]
+                    }]
+                }]
+            })
+            .then(function(data)
+            {
+                res.json(data);
+            });
+        }
 
+        else
+        {
+            res.redirect("login");
+        }
+    });
+
+    //Delete a survey taker from a survey. ID is row in turveytakers table.
+    app.delete("/api/deletesurveytaker/:id", isAuthenticated, function(req, res)
+    {
+            
+        db.SurveyTaker.destroy(
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        .then(function(dbSurveyTaker)
+        {
+            res.json(dbSurveyTaker);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Mark a survey as read. ID is row in turveytakers table.
+    app.put("/api/markasread/:id", isAuthenticated, function(req, res)
+    {
+        db.SurveyTaker.update(
+        {
+            isRead: true
+        },
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        .then(function(dbBurger)
+        {
+            res.json(dbBurger);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
 
     
+
+
+
+
 
     /*********************************** Authentication Routes ***********************************/
     
