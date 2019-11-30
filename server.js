@@ -1,8 +1,8 @@
 //Dependencies
-let express      = require("express");
-let session      = require('express-session');
-let morgan       = require('morgan');
-let passport     = require('./config/passport');
+let express  = require("express");
+let session  = require('express-session');
+let morgan   = require('morgan');
+let passport = require('./config/passport');
 
 //Setting up port and requiring models for syncing
 let PORT = process.env.PORT || 8880;

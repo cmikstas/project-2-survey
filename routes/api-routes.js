@@ -9,7 +9,59 @@ module.exports = function(app)
 {
     /****************************** Add additional API routes here. ******************************/
 
+    //Get all the surveys that the specified user is a part of.
+    app.get("/api/usersurveys/:username", isAuthenticated, function(req, res)
+    {
+        if (req.user)
+        {
+            //Get all the surveys the current user belongs to.
+            db.SurveyTaker.findAll(
+            {
+                where:
+                {
+                    Username: req.user.username
+                },
+                include: 
+                [{
+                    //Get the survey description for each survey.
+                    model: db.Survey,
+                    include:
+                    [{
+                        //Get the owner of the survey.
+                        model: db.User,
+                        attributes: ["username", "id"]
+                    }]
+                }]
+            })
+            .then(function(data)
+            {
+                res.json(data);
+            });
+        }
 
+        else
+        {
+            res.redirect("login");
+        }
+    });
+
+    /*
+    User.findAll({
+        include: [{
+          model: Tool,
+          as: 'Instruments',
+          include: [{
+            model: Teacher,
+            where: {
+              school: "Woodstock Music School"
+            },
+            required: false
+          }]
+        }]
+      }).then(function(users) {
+        
+      })
+      */
 
     
 

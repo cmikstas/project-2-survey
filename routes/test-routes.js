@@ -11,15 +11,7 @@ module.exports = function(app)
 {
     app.get("/test/createusers", function(req, res)
     {
-        // If the user already has an account send them to the members page
-        if (req.user)
-        {
-            res.render("testing/createUsers");
-        }
-        else
-        {
-            res.render("login");
-        }
+        res.render("testing/createUsers");
     });
 
     app.get("/test/deleteusers", function(req, res)
