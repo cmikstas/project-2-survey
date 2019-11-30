@@ -45,25 +45,55 @@ module.exports = function(app)
         }
     });
 
-    /*
-    User.findAll({
-        include: [{
-          model: Tool,
-          as: 'Instruments',
-          include: [{
-            model: Teacher,
-            where: {
-              school: "Woodstock Music School"
-            },
-            required: false
-          }]
-        }]
-      }).then(function(users) {
-        
-      })
-      */
+    //Delete a survey taker from a survey. ID is row in turveytakers table.
+    app.delete("/api/deletesurveytaker/:id", isAuthenticated, function(req, res)
+    {
+            
+        db.SurveyTaker.destroy(
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        .then(function(dbSurveyTaker)
+        {
+            res.json(dbSurveyTaker);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Mark a survey as read. ID is row in turveytakers table.
+    app.put("/api/markasread/:id", isAuthenticated, function(req, res)
+    {
+        db.SurveyTaker.update(
+        {
+            isRead: true
+        },
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        .then(function(dbBurger)
+        {
+            res.json(dbBurger);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
 
     
+
+
+
+
 
     /*********************************** Authentication Routes ***********************************/
     
