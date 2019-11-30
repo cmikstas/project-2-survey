@@ -33,11 +33,12 @@ app.use(passport.session());
 // Requiring our routes
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
+require("./routes/test-routes.js")(app);
 
 //Sync sequelize models then start Express.
 db.sequelize.sync(
 {
-    //force: true //Use this only to wipe the database clean!
+    force: true //Use this only to wipe the database clean!
 })
 .then(function()
 {
