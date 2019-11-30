@@ -1,0 +1,29 @@
+/******************************************* Page Body *******************************************/
+
+.page-title
+{
+    margin: 15px 0px;
+}
+
+.survey-info
+{
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+/******************************************* Navbar *******************************************/
+
+.navbar-cancel
+{
+    float: right;
+    color: #111111;
+    margin-right: 25px;
+}
+
+.navbar-submit
+{
+    float: right;
+    color: #111111;
+    margin-right: 25px;
+}

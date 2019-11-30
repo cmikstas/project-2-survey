@@ -1,12 +1,211 @@
-<nav class="navbar navbar-default bg-secondary">
-    <div class="container">
-        <div class="navbar-header">
-            <div class="navbar-user">Hello, {{user}}! </div>
-            <a class="navbar-logout" href="/logout">
-                Logout
-            </a>
-        </div>
-    </div>
-</nav>
+<link rel="stylesheet" href="/css/makeSurveyStyle.css" type="text/css" />
 
-<h1>Make New Survey</h1>
+<header class="bg-secondary">
+    <div class="container">
+        <nav class="navbar navbar-default bg-secondary">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="navbar-user">Hello, {{user}}! </div>
+                    <a class="navbar-logout" href="/logout">
+                        Logout
+                    </a>
+                    <a class="navbar-cancel" href="/makeSurvey.handlebars">
+                        Cancel
+                    </a>
+                    <a class="navbar-submit" href="/makeSurvey.handlebars">
+                        Submit
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<div class="page-title">
+    <h1>Make New Survey</h1>
+</div>
+
+<div class="container border rounded mb-2">
+    <div class="row">
+
+        <!--NEW SURVEY QUESTION COLUMN-->
+
+        <div class="col-md-4 border">
+            <form class="border-bottom mt-2">
+                <div class="form-group">
+                    <label class="survey-info" for="surveyQuestion">Question Creator</label>
+                    <input type="text" class="form-control" id="surveyQuestion"
+                        placeholder="Enter new question name...">
+                    <label class="survey-info mt-2">Question Options</label>
+                    <div id="questionOptions" class="border rounded bg-light" style="height: 100px;">
+
+                    </div>
+                    <button type="button" class="btn btn-primary mt-2">Add Question</button>
+                    <button type="button" class="btn btn-danger mt-2">Clear Question</button>
+                </div>
+            </form>
+            <form class="border-bottom mt-2">
+                <div class="form-group">
+                    <div>
+                        <label class="survey-info" for="gPlaces">Search Google Places</label>
+                        <input type="text" class="form-control" id="gPlaces" placeholder="Search here...">
+                        <button type="button" class="btn btn-success mt-2">Search</button>
+                    </div>
+                    <div class="mt-2">
+                        <p class="survey-info">
+                            Results
+                        </p>
+                        <div id="gPlacesResults" class="border rounded bg-light" style="height: 100px;">
+
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <label class="survey-info" for="customQ">Add Custom Option</label>
+                        <input type="text" class="form-control" id="customQ" placeholder="Add custom item...">
+                        <button type="button" class="btn btn-success mt-2">Add Option</button>
+                    </div>
+                </div>
+            </form>
+            <form class="mt-2 border-bottom">
+                <div class="form-group">
+                    <div>
+                        <p class="survey-info">
+                            Add Users
+                        </p>
+                    </div>
+                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 100px;">
+
+                    </div>
+                    <button type="button" class="btn btn-success mt-2">Add Users</button>
+                </div>
+            </form>
+            <form class="mt-2 border-bottom">
+                <div class="form-group">
+                    <div>
+                        <p class="survey-info">
+                            Add Distribution List
+                        </p>
+                    </div>
+                    <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;">
+
+                    </div>
+                    <button type="button" class="btn btn-success mt-2">Add List to Survey</button>
+                    <button type="button" class="btn btn-danger mt-2">Delete List</button>
+                </div>
+            </form>
+            <form class="mt-2">
+                <div class="form-group">
+                    <div>
+                        <p class="survey-info">
+                            Added Users
+                        </p>
+                    </div>
+                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 100px;">
+
+                    </div>
+                    <div class="mt-2 form-inline">
+                        <input type="text" class="form-control mr-2 w-70" id="surveyQuestion"
+                            placeholder="New list name...">
+                        <button type="button" class="btn btn-success">Save List</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--NEW SURVEY COLUMN-->
+
+        <div class="col-md-4 border">
+            <form class="border-bottom mt-2">
+                <div class="form-group">
+                    <label class="survey-info" for="surveyName">Survey Title</label>
+                    <input type="text" class="form-control" id="surveyName" placeholder="Enter title...">
+                </div>
+
+                <!--Date Time Picker-->
+
+                <div class="form-group">
+                    <label class="survey-info" for="startTime">Start Time</label>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="survey-info" for="endTime">End Time</label>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary mb-3">Begin Survey</button>
+
+            </form>
+            <div class="border-bottom pt-2">
+                <p class="survey-info">Google Maps Results</p>
+                <div id="gMapsDiv" class="border rounded bg-light mt-2 mb-3" style="height: 150px;">
+
+                </div>
+            </div>
+
+            <div class="border-bottom pt-2">
+                <p class="survey-info">Survey Questions</p>
+                <div id="gMapsDiv" class="border rounded bg-light mt-2 mb-3" style="height: 300px;">
+
+                </div>
+            </div>
+        </div>
+
+        <!--COMMENT COLUMN-->
+
+        <div class="col-md-4 border">
+            <div class="mt-2">
+                <p class="survey-info">
+                    Comment History
+                </p>
+                <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 250px;">
+
+                </div>
+            </div>
+            <div class="mt-2">
+                <label class="survey-info" for="addComment">Add New Comment</label>
+                <input type="text" class="form-control" id="addComment" placeholder="Enter comment...">
+                <button type="button" class="btn btn-success mt-2">Send</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--Moment-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+
+<!--Bootstrap-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+<!--jQuery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!--Date Time Picker-->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+<!--Date Time Picker Javascript-->
+<script>
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+</script>
