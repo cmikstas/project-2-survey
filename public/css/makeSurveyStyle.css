@@ -12,3 +12,18 @@
     font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
 }
 
+/******************************************* Navbar *******************************************/
+
+.navbar-cancel
+{
+    float: right;
+    color: #111111;
+    margin-right: 25px;
+}
+
+.navbar-submit
+{
+    float: right;
+    color: #111111;
+    margin-right: 25px;
+}
