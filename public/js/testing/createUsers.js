@@ -1,11 +1,13 @@
 let index = 0;
 let usernames =
 [
-    "Greg"    , "Hank"  , "Hannah"   , "Jennifer" , "Jules"     ,
-    "Flippers", "George", "BigMan69" , "Epstein"  , "Grungy1106",
-    "Bob"     , "Jake"  , "Jim"      , "Samantha" , "Julie"     ,
-    "Elijah"  , "Chris" , "Sultan"   , "Humphrey" , "Jack"      ,
-    "Jojo"    , "Mark"  , "DannyBoy" , "Davie504" , "JimBob"
+    "test"      , "Greg"    , "Hank"  , "Hannah"   , "Jennifer" ,
+    "Jules"     ,"Flippers" , "George", "BigMan69" , "Epstein"
+    /*
+    "Grungy1106", "Bob"     , "Jake"  , "Jim"      , "Samantha" ,
+    "Julie"     , "Elijah"  , "Chris" , "Sultan"   , "Humphrey" ,
+    "Jack"      , "Jojo"    , "Mark"  , "DannyBoy" , "Davie504"
+    */
 ];
 
 let genUsers = function()
@@ -31,6 +33,10 @@ let genUsers = function()
         {
             genUsers();
         }
+        else
+        {
+            window.location.replace("../logout");
+        }
     })
     .fail(function(err)
     {
@@ -41,6 +47,10 @@ let genUsers = function()
         if(index < usernames.length)
         {
             genUsers();
+        }
+        else
+        {
+            window.location.replace("../logout");
         }
     })
 }

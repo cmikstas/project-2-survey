@@ -3,6 +3,12 @@ module.exports = function(sequelize, DataTypes)
 {
     let SurveyTaker = sequelize.define("SurveyTaker",
     {
+        username:
+        {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+
         isRead:
         {
             type: DataTypes.BOOLEAN,
@@ -10,10 +16,11 @@ module.exports = function(sequelize, DataTypes)
             defaultValue: false
         },
 
-        username:
+        isStarred:
         {
-            type: DataTypes.STRING,
+            type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: false
         }
     });
 
