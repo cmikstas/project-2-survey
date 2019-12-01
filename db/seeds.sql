@@ -32,15 +32,15 @@ INSERT INTO surveytakers (username, isRead, isStarred, createdAt, updatedAt, Sur
 ('test', false, false, NOW(), NOW(), 1),
 ('test', false, false, NOW(), NOW(), 2),
 ('test', false, false, NOW(), NOW(), 3),
-('test', true, false, NOW(), NOW(), 4),
+('test', false, false, NOW(), NOW(), 4),
 ('test', false, false, NOW(), NOW(), 5),
 ('test', true, false, NOW(), NOW(), 6),
 ('test', false, false, NOW(), NOW(), 7),
 ('test', false, false, NOW(), NOW(), 8),
 ('test', false, false, NOW(), NOW(), 9),
 ('test', false, false, NOW(), NOW(), 10),
-('test', false, false, NOW(), NOW(), 11),
-('test', false, false, NOW(), NOW(), 12);
+('test', false, true, NOW(), NOW(), 11),
+('test', false, true, NOW(), NOW(), 12);
 
 INSERT INTO surveytakers (username, isRead, isStarred, createdAt, updatedAt, SurveyId) VALUES
 ('Greg', false, false, NOW(), NOW(), 1),

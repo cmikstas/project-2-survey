@@ -61,3 +61,10 @@
     margin-bottom: .4rem;
     margin-top: .2rem;
 }
+
+.survey-header h1
+{
+    background-color: rgba(30, 47, 126, 1);
+    margin: 1rem 0;
+    font-size: 2.5rem;
+}
