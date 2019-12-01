@@ -101,7 +101,7 @@ let showSurveys = function()
         surveyBtn.addClass("survey-btn btn btn-primary");
 
         //Event handler for "Entered Survey" button.
-        surveyBtn.on("click", function()
+        surveyBtn.on("mousedown", function()
         {
             //Send the PUT request.
             $.ajax("/api/markasread/" + surveyTakerId,
@@ -121,7 +121,7 @@ let showSurveys = function()
         deleteBtn.addClass("survey-btn btn btn-danger");
         
         //Event handler for Delete button.
-        deleteBtn.on("click", function()
+        deleteBtn.on("mousedown", function()
         {
             if (confirm("Are you sure you want to remove this survey from your queue?"))
             {
@@ -151,7 +151,7 @@ let showSurveys = function()
         viewBtn.addClass("survey-btn btn btn-primary");
 
         //Event handler for "Entered Survey" button.
-        viewBtn.on("click", function()
+        viewBtn.on("mousedown", function()
         {
             //Send the PUT request.
             $.ajax("/api/markasread/" + surveyTakerId,
@@ -171,7 +171,7 @@ let showSurveys = function()
         starBtn.addClass("survey-btn btn btn-success");
 
         //Event handler for "Star Survey" button.
-        starBtn.on("click", function()
+        starBtn.on("mousedown", function()
         {
             //Send the PUT request.
             $.ajax("/api/star/" + surveyTakerId + "/true",
@@ -191,7 +191,7 @@ let showSurveys = function()
         unstarBtn.addClass("survey-btn btn btn-success");
 
         //Event handler for "Star Survey" button.
-        unstarBtn.on("click", function()
+        unstarBtn.on("mousedown", function()
         {
             //Send the PUT request.
             $.ajax("/api/star/" + surveyTakerId + "/false",
