@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/nmikstas/burger-2#readme",
   "dependencies": {
+    "@google/maps": "^1.0.2",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
