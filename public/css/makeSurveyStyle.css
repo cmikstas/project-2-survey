@@ -27,3 +27,16 @@
     color: #111111;
     margin-right: 25px;
 }
+
+/******************************************* Google Maps *******************************************/
+
+#map
+{
+	height: 400px;
+	width: 100%;
+}
+
+#commentsDiv
+{
+    overflow: auto;
+}
