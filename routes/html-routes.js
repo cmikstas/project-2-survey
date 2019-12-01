@@ -54,12 +54,12 @@ module.exports = function(app)
         }
     });
 
-    app.get("/viewsurvey", function(req, res)
+    app.get("/viewsurvey/:id?", function(req, res)
     {
         // If the user already has an account send them to the members page
         if (req.user)
         {
-            let hbsObject = { user: req.user.username };
+            let hbsObject = { user: req.user.username, id: req.params.id };
             res.render("viewSurvey", hbsObject);
         }
         else

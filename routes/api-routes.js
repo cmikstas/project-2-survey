@@ -19,7 +19,7 @@ module.exports = function(app)
             {
                 where:
                 {
-                    Username: req.user.username
+                    Username: req.params.username
                 },
                 include: 
                 [{
@@ -72,6 +72,41 @@ module.exports = function(app)
         db.SurveyTaker.update(
         {
             isRead: true
+        },
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        .then(function(dbBurger)
+        {
+            res.json(dbBurger);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Mark a survey as starred or unstarred. ID is row in turveytakers table.
+    app.put("/api/star/:id/:true?", isAuthenticated, function(req, res)
+    {
+        let param = req.params.true;
+        let isTrue;
+
+        if(param == "true")
+        {
+            isTrue = true;
+        }
+        else
+        {
+            isTrue = false;
+        }
+
+        db.SurveyTaker.update(
+        {
+            isStarred: isTrue
         },
         {
             where:
