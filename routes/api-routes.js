@@ -54,7 +54,7 @@ module.exports = function(app)
         }
     });
 
-    //Delete a survey taker from a survey. ID is row in turveytakers table.
+    //Delete a survey taker from a survey. ID is row in surveytakers table.
     app.delete("/api/deletesurveytaker/:id", isAuthenticated, function(req, res)
     {
             
@@ -75,7 +75,7 @@ module.exports = function(app)
         });
     });
 
-    //Mark a survey as read. ID is row in turveytakers table.
+    //Mark a survey as read. ID is row in surveytakers table.
     app.put("/api/markasread/:id", isAuthenticated, function(req, res)
     {
         db.SurveyTaker.update(
@@ -98,7 +98,7 @@ module.exports = function(app)
         });
     });
 
-    //Mark a survey as starred or unstarred. ID is row in turveytakers table.
+    //Mark a survey as starred or unstarred. ID is row in surveytakers table.
     app.put("/api/star/:id/:true?", isAuthenticated, function(req, res)
     {
         let param = req.params.true;
