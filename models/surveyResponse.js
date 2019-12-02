@@ -7,7 +7,13 @@ module.exports = function(sequelize, DataTypes)
         {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+
+        surveyId:
+        {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
     });
 
     SurveyResponse.associate = function(models)
