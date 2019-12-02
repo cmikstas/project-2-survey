@@ -24,12 +24,18 @@ module.exports = function(sequelize, DataTypes)
 
         latitude:
         {
-            type: DataTypes.FLOAT
+            type: DataTypes.DOUBLE
         },
 
         longitude:
         {
-            type: DataTypes.FLOAT
+            type: DataTypes.DOUBLE
+        },
+
+        surveyId:
+        {
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
 
         //General purpose data slots for future expansion.
