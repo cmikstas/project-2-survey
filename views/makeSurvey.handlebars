@@ -1,22 +1,24 @@
+<!-- Picker style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-datetimepicker.css">
+
+<!--Personal Styling-->
+<link rel="stylesheet" href="/css/style.css" type="text/css" />
 <link rel="stylesheet" href="/css/makeSurveyStyle.css" type="text/css" />
 
-<header class="bg-secondary">
+<nav class="navbar navbar-default bg-secondary">
     <div class="container">
-        <nav class="navbar navbar-default bg-secondary">
-            <div class="container">
-                <div class="navbar-header">
-                    <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! </div>
-                    <a class="navbar-logout" href="/logout">
-                        Logout
-                    </a>
-                    <a class="navbar-cancel" href="/home">
-                        Home
-                    </a>
-                </div>
-            </div>
-        </nav>
+        <div class="navbar-header">
+            <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! Unread Surveys:</div><div id="unread-div">0</div>
+            <a class="navbar-logout" href="/logout">
+                Logout
+            </a>
+            <a class="navbar-logout" href="/home">
+                Home
+            </a>
+        </div>
     </div>
-</header>
+</nav>
 
 <div class="page-title">
     <h1>Make New Survey</h1>
@@ -130,15 +132,15 @@
                     </div>
                 </div>
 
-                <div>
-                    <input type='text' class="form-control" id='datetimepicker4' />
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker4').datetimepicker();
-                    });
-                </script>
-
+                
+                <div class='input-group date' id='datetimepicker4'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>         
+        
+                
                 <button type="button" class="btn btn-primary mb-3">Create Survey</button>
 
             </form>
@@ -200,6 +202,12 @@
 
 <script type="text/javascript" src="js/testing/makeSurvey.js"></script>
 
-<!--Date Time Picker-->
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
+
+<script type="text/javascript">
+    $(function ()
+    { 
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker4').datetimepicker();
+    });
+</script>
