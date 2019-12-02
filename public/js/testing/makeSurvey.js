@@ -1,6 +1,6 @@
 var map;
 
-var userComments = [];
+var userCommentsArr = [];
 
 var selectionArray = [];
 
@@ -12,17 +12,16 @@ $(document).ready(function ()
     
     $("#comment-btn").on("click", function (event)
     {
-        let userName =    $(".navbar-user").attr("data-username");
+        let userName    = $(".navbar-user").attr("data-username");
         let userComment = $(".addComment").val().trim();
-
         let fullComment = "<b>" + userName + "</b>" + ": " + userComment;
-        let commentDiv =  $("<div>");
+        let commentDiv  = $("<div>");
+
         commentDiv.attr("contenteditable", "true");
         commentDiv.addClass("mx-2");
 
         commentDiv.append(fullComment);
         $("#commentsDiv").append(commentDiv);
-
         $(".addComment").val("");
 
         let commentDetails =
@@ -31,8 +30,8 @@ $(document).ready(function ()
             userComment: userComment,
         }
 
-        userComments.push(commentDetails);
-        console.log(userComments);
+        userCommentsArr.push(commentDetails);
+        //console.log(userComments);
     });
 
     function geoInitialize()
@@ -43,6 +42,5 @@ $(document).ready(function ()
             	center: { lat: 40.7608, lng: -111.8910 },
             	zoom: 9
         });
-    }
-        
+    }        
 });
