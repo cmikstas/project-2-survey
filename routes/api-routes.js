@@ -133,6 +133,18 @@ module.exports = function(app)
         });
     });
 
+    app.get("/api/allusers", isAuthenticated, function(req, res)
+    {
+        db.User.findAll(
+        {
+            attributes: ["username", "id"]
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
     //Google Places API
     app.get("/api/places/:query/:radius", isAuthenticated, function(req, res)
     {
