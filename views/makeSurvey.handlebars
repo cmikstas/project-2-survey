@@ -9,11 +9,8 @@
                     <a class="navbar-logout" href="/logout">
                         Logout
                     </a>
-                    <a class="navbar-cancel" href="/makeSurvey.handlebars">
-                        Cancel
-                    </a>
-                    <a class="navbar-submit" href="/makeSurvey.handlebars">
-                        Submit
+                    <a class="navbar-cancel" href="/home">
+                        Home
                     </a>
                 </div>
             </div>
@@ -133,17 +130,16 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="survey-info" for="endTime">End Time</label>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
+                <div>
+                    <input type='text' class="form-control" id='datetimepicker4' />
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker4').datetimepicker();
+                    });
+                </script>
 
-                <button type="button" class="btn btn-primary mb-3">Begin Survey</button>
+                <button type="button" class="btn btn-primary mb-3">Create Survey</button>
 
             </form>
             <div class="border-bottom pt-2">
@@ -185,7 +181,8 @@
 <!--Moment-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKxzOdcZqXI85LSaL_dfADOeeWELc9igc&libraries=places&callback=initMap"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKxzOdcZqXI85LSaL_dfADOeeWELc9igc&libraries=places&callback=initMap"></script>
 
 <!--Bootstrap-->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -206,13 +203,3 @@
 <!--Date Time Picker-->
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
-
-<!--Date Time Picker Javascript-->
-
-<!--
-<script>
-    $(function () {
-        $('#datetimepicker1').datetimepicker();
-    });
-</script>
--->

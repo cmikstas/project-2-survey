@@ -5,6 +5,15 @@ var passport = require("../config/passport");
 // Requiring our custom middleware for checking if a user is logged in
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
+
+require("dotenv").config();
+var keys = require("../keys.js");
+
+const googleMapsClient = require('@google/maps').createClient(
+{
+    key: keys.google.key
+});
+
 module.exports = function(app)
 {
     /****************************** Add additional API routes here. ******************************/
@@ -124,9 +133,30 @@ module.exports = function(app)
         });
     });
 
-    
-
-
+    //Google Places API
+    app.get("/api/places/:query/:radius", isAuthenticated, function(req, res)
+    {
+        let query   = req.params.query;
+        let radius  = parseInt(req.params.radius);
+        
+        googleMapsClient.places(
+        {
+            query: query,
+            radius: radius
+        },
+        function(err, response)
+        {
+            if (!err)
+            {
+                res.json(response.json.results);
+                console.log(response.json.results);
+            }
+            else
+            {
+                console.log(err);
+            }
+        });
+    });
 
 
 
