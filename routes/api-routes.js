@@ -299,6 +299,43 @@ module.exports = function(app)
         });
     });
 
+    //Post a comment.
+    app.post("/api/postcomment", isAuthenticated, function(req, res)
+    {
+        db.SurveyComment.create(
+        {
+            username: req.body.username,
+            comment:  req.body.comment,
+            SurveyId: req.body.surveyId
+        })
+        .then(function(result)
+        {
+            res.json({ inserted: true });
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Get the number of comments for a specific survey.
+    app.get("/api/numcomments/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.SurveyComment.findAll(
+        {
+            where:
+            {
+                SurveyId: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json({commentCount: data.length });
+        });
+    });
+
     
 
 
