@@ -38,6 +38,21 @@
     display: inline;
 }
 
+.navbar
+{
+    border: 0;
+    min-height: auto;
+    margin-bottom: 0;
+}
+
+#unread-div
+{
+    display: inline-block;
+    margin-left: .5rem;
+    color: #771111;
+    font-weight: bold;
+}
+
 /******************************************* Google Maps *******************************************/
 
 #map
