@@ -1,28 +1,29 @@
 var map;
 
-var userComments = [];
+var userCommentsArr = [];
+var surveyUserArr   = [];
 
-var selectionArray = [];
+var selectionArray  = [];
 
 var markers = [];
 
 $(document).ready(function () 
 {
     geoInitialize();
+    pullUsers();
     
     $("#comment-btn").on("click", function (event)
     {
-        let userName =    $(".navbar-user").attr("data-username");
+        let userName    = $(".navbar-user").attr("data-username");
         let userComment = $(".addComment").val().trim();
-
         let fullComment = "<b>" + userName + "</b>" + ": " + userComment;
-        let commentDiv =  $("<div>");
+        let commentDiv  = $("<div>");
+
         commentDiv.attr("contenteditable", "true");
         commentDiv.addClass("mx-2");
 
         commentDiv.append(fullComment);
         $("#commentsDiv").append(commentDiv);
-
         $(".addComment").val("");
 
         let commentDetails =
@@ -31,8 +32,8 @@ $(document).ready(function ()
             userComment: userComment,
         }
 
-        userComments.push(commentDetails);
-        console.log(userComments);
+        userCommentsArr.push(commentDetails);
+        //console.log(userComments);
     });
 
     function geoInitialize()
@@ -44,5 +45,42 @@ $(document).ready(function ()
             	zoom: 9
         });
     }
-        
+    
+    function pullUsers()
+    {
+        $.ajax("/api/allusers",
+        {
+            type: "GET"
+        })
+        .then(function(data)
+        {
+            console.log(data);
+            for (let i = 0; i < data.length; i++)
+            {
+                let userName = data[i].username;
+                //console.log(userName);
+
+                let userBox = $("<label>");
+                userBox.addClass("form-check-label mx-3");
+                userBox.append(userName);
+
+                let checkbox = $("<input>");
+                checkbox.addClass("form-check-input");
+                checkbox.attr("type", "checkbox");
+                checkbox.attr("data-username", userName);
+
+                let userNameDiv = $("<div>");
+                userNameDiv.addClass("form-check");
+
+                userNameDiv.append(checkbox);
+                userNameDiv.append(userBox);
+                $("#userResults").append(userNameDiv);
+            }
+
+            checkbox.on("click", function (event)
+            {
+                
+            });
+        });
+    }
 });

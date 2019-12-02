@@ -1,9 +1,17 @@
-// Requiring our models and passport as we've configured it
+//Requiring our models and passport as we've configured it
 var db = require("../models");
 var passport = require("../config/passport");
 
-// Requiring our custom middleware for checking if a user is logged in
+//Requiring our custom middleware for checking if a user is logged in
 var isAuthenticated = require("../config/middleware/isAuthenticated");
+
+//Get Google places configured and running.
+require("dotenv").config();
+var keys = require("../keys.js");
+const googleMapsClient = require('@google/maps').createClient(
+{
+    key: keys.google.key
+});
 
 module.exports = function(app)
 {
@@ -45,7 +53,7 @@ module.exports = function(app)
         }
     });
 
-    //Delete a survey taker from a survey. ID is row in turveytakers table.
+    //Delete a survey taker from a survey. ID is row in surveytakers table.
     app.delete("/api/deletesurveytaker/:id", isAuthenticated, function(req, res)
     {
             
@@ -66,7 +74,7 @@ module.exports = function(app)
         });
     });
 
-    //Mark a survey as read. ID is row in turveytakers table.
+    //Mark a survey as read. ID is row in surveytakers table.
     app.put("/api/markasread/:id", isAuthenticated, function(req, res)
     {
         db.SurveyTaker.update(
@@ -89,7 +97,7 @@ module.exports = function(app)
         });
     });
 
-    //Mark a survey as starred or unstarred. ID is row in turveytakers table.
+    //Mark a survey as starred or unstarred. ID is row in surveytakers table.
     app.put("/api/star/:id/:true?", isAuthenticated, function(req, res)
     {
         let param = req.params.true;
@@ -124,7 +132,180 @@ module.exports = function(app)
         });
     });
 
+    app.get("/api/allusers", isAuthenticated, function(req, res)
+    {
+        db.User.findAll(
+        {
+            attributes: ["username", "id"]
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
+    //Google Places API
+    app.get("/api/places/:query/:radius", isAuthenticated, function(req, res)
+    {
+        let query   = req.params.query;
+        let radius  = parseInt(req.params.radius);
+        
+        googleMapsClient.places(
+        {
+            query: query,
+            radius: radius
+        },
+        function(err, response)
+        {
+            if (!err)
+            {
+                res.json(response.json.results);
+                console.log(response.json.results);
+            }
+            else
+            {
+                console.log(err);
+            }
+        });
+    });
+
+    //Get initial survey data.
+    app.get("/api/initialsurveydata/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        //Get all the survey questions.
+        db.SurveyQuestion.findAll(
+        {
+            where:
+            {
+                SurveyId: surveyId
+            }
+        })
+        .then(function(dbSurveyQuestion)
+        {
+            //Get all the survey choices.
+            db.SurveyChoice.findAll(
+            {
+                where:
+                {
+                    surveyId: surveyId
+                }
+            })
+            .then(function(dbSurveyChoice)
+            {
+                //Get all the survey responses.
+                db.SurveyResponse.findAll(
+                {
+                    where:
+                    {
+                        surveyId: surveyId
+                    }
+                })
+                .then(function(dbSurveyResponse)
+                {
+                    //Get all the survey comments.
+                    db.SurveyComment.findAll(
+                    {
+                        where:
+                        {
+                            SurveyId: surveyId
+                        }
+                    })
+                    .then(function(dbSurveyComment)
+                    {
+                        let surveyData =
+                        {
+                            questions: dbSurveyQuestion,
+                            choices:   dbSurveyChoice,
+                            responses: dbSurveyResponse,
+                            comments:  dbSurveyComment
+                        };
+
+                        res.json(surveyData);
+                    })
+                    .catch(function(error)
+                    {
+                        throw error;
+                    });
+                })
+                .catch(function(error)
+                {
+                    throw error;
+                });                
+            })
+            .catch(function(error)
+            {
+                throw error;
+            });
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Get survey comments.
+    app.get("/api/surveycomments/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.SurveyComment.findAll(
+        {
+            where:
+            {
+                SurveyId: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
+    //Get survey responses.
+    app.get("/api/surveyresponses/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.SurveyResponse.findAll(
+        {
+            where:
+            {
+                surveyId: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
+    //Get survey data.
+    app.get("/api/survey/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.Survey.findAll(
+        {
+            where:
+            {
+                id: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
     
+
+
+
+    
+
+
 
 
 
