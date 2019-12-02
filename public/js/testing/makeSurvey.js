@@ -1,14 +1,16 @@
 var map;
 
 var userCommentsArr = [];
+var surveyUserArr   = [];
 
-var selectionArray = [];
+var selectionArray  = [];
 
 var markers = [];
 
 $(document).ready(function () 
 {
     geoInitialize();
+    pullUsers();
     
     $("#comment-btn").on("click", function (event)
     {
@@ -42,5 +44,43 @@ $(document).ready(function ()
             	center: { lat: 40.7608, lng: -111.8910 },
             	zoom: 9
         });
-    }        
+    }
+    
+    function pullUsers()
+    {
+        $.ajax("/api/allusers",
+        {
+            type: "GET"
+        })
+        .then(function(data)
+        {
+            console.log(data);
+            for (let i = 0; i < data.length; i++)
+            {
+                let userName = data[i].username;
+                //console.log(userName);
+
+                let userBox = $("<label>");
+                userBox.addClass("form-check-label mx-3");
+                userBox.append(userName);
+
+                let checkbox = $("<input>");
+                checkbox.addClass("form-check-input");
+                checkbox.attr("type", "checkbox");
+                checkbox.attr("data-username", userName);
+
+                let userNameDiv = $("<div>");
+                userNameDiv.addClass("form-check");
+
+                userNameDiv.append(checkbox);
+                userNameDiv.append(userBox);
+                $("#userResults").append(userNameDiv);
+            }
+
+            checkbox.on("click", function (event)
+            {
+                
+            });
+        });
+    }
 });
