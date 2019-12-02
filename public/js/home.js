@@ -161,7 +161,7 @@ let showSurveys = function()
             .then(function()
             {
                 if(debug)console.log("View Survey: " + surveyId);
-                window.location.replace("/viewsurvey/" +  surveyId);
+                window.location.replace("/takesurvey/" +  surveyId);
             });
         })
 

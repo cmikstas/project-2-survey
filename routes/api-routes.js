@@ -87,9 +87,9 @@ module.exports = function(app)
                 id: req.params.id
             }
         })
-        .then(function(dbBurger)
+        .then(function(data)
         {
-            res.json(dbBurger);
+            res.json(data);
         })
         .catch(function(error)
         {
