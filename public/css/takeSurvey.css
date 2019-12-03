@@ -116,7 +116,7 @@
 .btn-div
 {
     width: 100%;
-    text-align: right;
+    margin-left: 1.5rem;
 }
 
 .disabled
