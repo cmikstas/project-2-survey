@@ -132,6 +132,7 @@ module.exports = function(app)
         });
     });
 
+    //Get all the users.
     app.get("/api/allusers", isAuthenticated, function(req, res)
     {
         db.User.findAll(
@@ -335,6 +336,12 @@ module.exports = function(app)
             res.json({commentCount: data.length });
         });
     });
+
+    //Get all the responses for a survey.
+
+    //Get the number of responses for a survey.
+
+    //Clear response for username and question.
 
     
 
