@@ -1,8 +1,7 @@
 let debug = true; //Print extra stuff when debugging.
-
-let username;   //Logged in user.
-let id;         //Survey ID number.
-let surveyData; //Initial survey data.
+let username;     //Logged in user.
+let id;           //Survey ID number.
+let surveyData;   //Initial survey data.
 
 //The number of table rows during the last poll.
 let lastComments  = 0;
@@ -14,13 +13,6 @@ let isExpired = false;
 //Google Maps variables.
 let markers = [];
 let map;
-
-
-
-
-
-
-
 
 //Update the remaining survey time and disable expired surveys.
 let updateTime = function()
@@ -193,9 +185,10 @@ let showQuestions = function()
 
             let radioBtn = $("<input>");
             radioBtn.attr("name", "data-question" + questions[i].id);
-            radioBtn.attr("data-choice", choicesArray[j].id);
             radioBtn.attr("type", "radio");
+            radioBtn.attr("id", "radio-choice-" + choicesArray[j].id);
             radioBtn.addClass("radio-btn");
+            radioBtn.addClass("data-question" + questions[i].id);
             choiceDiv.append(radioBtn);
 
             let choiceTextSpan  = $("<span>");
@@ -218,20 +211,97 @@ let showQuestions = function()
         clearBtn = $("<button>");
         clearBtn.addClass("btn btn-primary question-clear-btn");
         clearBtn.attr("id", "clr-btn-" + questions[i].id);
+        clearBtn.attr("question", questions[i].id);
         clearBtn.append("Clear");
         btnDiv.append(clearBtn);
 
         //Clear button listener.
-
-
-
-
-
+        clearBtn.on("click", function()
+        {
+            // Send the DELETE request.
+            $.ajax("/api/deleteresponse/" + username + "/" + questions[i].id,
+            {
+                type: "DELETE"
+            }).then(function()
+            {
+                $(".data-question" + questions[i].id).prop('checked', false);
+                if(debug)console.log("Selection Cleared.");
+            });
+        });
 
         updateTime(); //Make sure to immediately disable expired surveys.
         $("#questions-div").append(questionDiv);
     }
 }
+
+
+
+
+
+
+
+
+
+//Check for new survey responses and update the survey if necessary.
+let updateSurveyResponses = function()
+{
+    $.get("/api/numresponses/" + id)
+    .then(function(data)
+    {
+        //Check if there are any new responses.
+        if(data.responseCount != lastResponses)
+        {
+            //Update the response count.
+            lastResponses = data.responseCount;
+
+            $.get("/api/surveyresponses/" + id)
+            .then(function(data)
+            {
+                if(debug)console.log(data);
+
+                let choices = surveyData.data.choices;
+
+                //Loop through all the survey choices and the the responses for each one.
+                for(let i = 0; i < choices.length; i++)
+                {
+                    let responseArray = data.filter(function(element)
+                    {
+                        //console.log("Survey Choice ID: " + element.SurveyChoiceId);
+                        return element.SurveyChoiceId === choices[i].id;
+                    })
+
+                    //Update the number of responses on the current choice.
+                    $("#data-choice-" + (i + 1)).text("(" + responseArray.length + ")");
+                }
+
+                //Update the radio buttons that have been selected by the current user.
+                for(let i = 0; i < data.length; i++)
+                {
+                    if(data[i].username === username)
+                    {
+                        $("#radio-choice-" + data[i].SurveyChoiceId).prop("checked", true);
+                        console.log(data[i]);
+                    }
+                }
+            })
+            .fail(function(err)
+            {
+                throw err;
+            });
+        }
+    })
+    .fail(function(err)
+    {
+        throw err;
+    });
+}
+
+
+
+
+
+
+
 
 //Display the survey when the page first loads.
 let buildSurvey = function()
@@ -249,7 +319,12 @@ let buildSurvey = function()
     //Setup Google Maps and add markers.
     geoInitialize();
 
+    //Show the questions and choices.
     showQuestions();
+
+    //Update the survey responses.
+    updateSurveyResponses();
+    setInterval(function(){updateSurveyResponses()}, 1000);
 }
 
 let getSurveyData = function()

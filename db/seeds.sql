@@ -119,17 +119,18 @@ INSERT INTO surveychoices (description, isGoogle, selectedCount, latitude, longi
 ("Chile-Tepin"               , true, 0, 40.76471799999999, -111.900093 , 13, NOW(), NOW(), 2);
 
 -- Add survey responses.
-INSERT INTO surveyresponses(username, surveyId, createdAt, updatedAt, SurveyChoiceId) VALUES
-("test"    , 13, NOW(), NOW(), 2),
-("Jennifer", 13, NOW(), NOW(), 2),
-("test"    , 13, NOW(), NOW(), 5),
-("test"    , 13, NOW(), NOW(), 14),
-("test"    , 13, NOW(), NOW(), 15),
-("Hank"    , 13, NOW(), NOW(), 6),
-("Hannah"  , 13, NOW(), NOW(), 2),
-("Greg"    , 13, NOW(), NOW(), 1),
-("Greg"    , 13, NOW(), NOW(), 7),
-("Hank"    , 13, NOW(), NOW(), 1);
+INSERT INTO surveyresponses(username, surveyId, questionId, createdAt, updatedAt, SurveyChoiceId) VALUES
+("test"    , 13, 5, NOW(), NOW(), 13),
+("Jennifer", 13, 1, NOW(), NOW(), 2),
+("test"    , 13, 2, NOW(), NOW(), 5),
+("test"    , 13, 4, NOW(), NOW(), 14),
+("test"    , 13, 1, NOW(), NOW(), 15),
+("Hank"    , 13, 2, NOW(), NOW(), 6),
+("Hannah"  , 13, 1, NOW(), NOW(), 2),
+("Greg"    , 13, 1, NOW(), NOW(), 1),
+("Greg"    , 13, 3, NOW(), NOW(), 7),
+("Hank"    , 13, 1, NOW(), NOW(), 1),
+("Hank"    , 13, 5, NOW(), NOW(), 17);
 
 -- Add survey comments.
 INSERT INTO surveycomments(comment, username, createdAt, updatedAt, SurveyId) VALUES
