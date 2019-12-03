@@ -191,6 +191,40 @@ let showQuestions = function()
             radioBtn.addClass("data-question" + questions[i].id);
             choiceDiv.append(radioBtn);
 
+            //Event listener for the radio buttons.
+            radioBtn.on("click", function()
+            {
+                //Delete any existing selections for this question.
+                $.ajax("/api/deleteresponse/" + username + "/" + questions[i].id,
+                {
+                    type: "DELETE"
+                }).then(function()
+                {
+                    //username:       req.body.username,
+                    //surveyId:       req.body.surveyId,
+                    //questionId:     req.body.questionId,
+                    //SurveyChoiceId: req.body.surveyChoiceId
+
+                    //Post the new response.
+                    $.ajax("/api/addresponse",
+                    {
+                        type: "POST",
+                        data:
+                        { 
+                            username:       username,
+                            surveyId:       id,
+                            questionId:     questions[i].id,
+                            surveyChoiceId: choicesArray[j].id
+                        }
+                    })
+                    .then(function(data)
+                    {
+                        lastResponses--;
+                        if(debug)console.log("Response Posted");
+                    });
+                });
+            });
+
             let choiceTextSpan  = $("<span>");
             choiceTextSpan.text(choicesArray[j].description);
             choiceDiv.append(choiceTextSpan);
@@ -432,7 +466,6 @@ let sendComment = function(event)
     })
     .then(function(data)
     {
-        console.log(data);
         if(debug)console.log("Comment Posted");
     });
 }
