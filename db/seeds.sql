@@ -74,7 +74,7 @@ INSERT INTO surveytakers (username, isRead, isStarred, createdAt, updatedAt, Sur
 
 -- Create an active survey.
 INSERT INTO surveys (surveyTitle, startTime, stopTime, createdAt, updatedAt, UserId) VALUES
-('The super duper test survey!', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 1 MINUTE, NOW(), NOW(), 3);
+('The super duper test survey!', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 10 MINUTE, NOW(), NOW(), 3);
 
 -- Add the survey takers.
 INSERT INTO surveytakers (username, isRead, isStarred, createdAt, updatedAt, SurveyId) VALUES
