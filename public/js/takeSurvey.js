@@ -1,13 +1,51 @@
-let debug = true;
-let username;
-let id;
-let surveyData;
-let lastComments = 0;
+let debug = true; //Print extra stuff when debugging.
+
+let username;   //Logged in user.
+let id;         //Survey ID number.
+let surveyData; //Initial survey data.
+
+//The number of table rows during the last poll.
+let lastComments  = 0;
+let lastResponses = 0;
+
+//Boolean to indicate the survey has expired.
+let isExpired = false;
+
+//Google Maps variables.
+let markers = [];
+let map;
 
 
 
 
 
+
+
+
+//Update the remaining survey time and disable expired surveys.
+let updateTime = function()
+{
+    let endTime    = surveyData.survey[0].stopTime;
+    let endMoment  = moment(endTime, "YYYY-MM-DD hh:mm:ss");
+    let thisMoment = moment();
+
+    if(thisMoment > endMoment)
+    {
+        isExpired = true;
+        $("#this-time").text("Expired");
+
+        //Disable all the radio buttons.
+        $("#questions-div input:radio").attr('disabled',true);
+        $(".question-clear-btn").prop('disabled', true);
+        $(".question-block").addClass("disabled");
+        return;
+    }
+
+    //Calculate remaining time for the survey.
+    let remaining    = endMoment.diff(thisMoment);
+    let remainString = moment.utc(remaining).format("HH:mm:ss");
+    $("#this-time").text(remainString);
+}
 
 //Figure out how many surveys have not been read.
 let calcUnread = function()
@@ -20,7 +58,6 @@ let calcUnread = function()
             unread++;
         }
     }
-
     $("#unread-div").text(unread);
 }
 
@@ -45,33 +82,174 @@ let getSurveys = function()
     });
 }
 
+// function to add a marker to google map
+function addMarker(selectionObject)
+{
+    // creates a marker and adds it to google maps
+    let thisMarker = new google.maps.Marker
+    ({
+            position: { lat: selectionObject.lat, lng: selectionObject.lng },
+            map: map,
+            title: selectionObject.name,
+    });
+
+    markers.push(thisMarker);
+}
+
+//Initialize Google maps and add the markers.
+let geoInitialize = function()
+{
+    let choices = surveyData.data.choices;
+    let lat = 0;
+    let lng = 0;
+    let validLat = 0;
+    let validLng = 0;
+
+    //average all the latitudes and longitudes to find center of map.
+    for(let i = 0; i < choices.length; i++)
+    {
+        if(choices[i].latitude !== null)
+        {
+            lat += choices[i].latitude;
+            validLat++;
+        }
+
+        if(choices[i].longitude !== null)
+        {
+            lng += choices[i].longitude;
+            validLng++;
+        }
+    }
+
+    lat /= validLat;
+    lng /= validLng;
+
+    //Make sure there is valid coordinates to center the map.
+    if(isNaN(lat) || isNaN(lng))
+    {
+        lat = 0;
+        lng = 0;
+    }
+    
+    console.log("Lat: " + lat + ", Lon: " + lng);
+
+    //Create a map.
+    map = new google.maps.Map(document.getElementById('map'),
+    {
+        center: { lat: lat, lng: lng },
+       	zoom: 9
+    });
+
+    //Add choice markers to map.
+    for(let i = 0; i < choices.length; i++)
+    {
+        if(choices[i].isGoogle)
+        {
+            addMarker(
+            {
+                lat:  choices[i].latitude,
+                lng:  choices[i].longitude,
+                name: choices[i].description
+            })
+        }
+    }
+}
+
+//Load all the questions and their options to the page.
+let showQuestions = function()
+{
+    let questions = surveyData.data.questions;
+    let choices   = surveyData.data.choices;
+
+    for(let i = 0; i < questions.length; i++)
+    {
+        //Create the main question block div.
+        let questionDiv = $("<div>");
+        questionDiv.addClass("question-block");
+        questionDiv.attr("id", "question-" + questions[i].id);
+
+        //Add the question text to the question block div.
+        let questionText = $("<div>");
+        questionText.addClass("question-text");
+        questionText.text(questions[i].question);
+        questionDiv.append(questionText);
+
+        //Create an options block to hold all the options.
+        let choicesBlock = $("<div>");
+        choicesBlock.addClass("options-block");
+        questionDiv.append(choicesBlock);
+
+        //Get all the choices for the current question.
+        let choicesArray = choices.filter(function(value)
+        {
+            return questions[i].id === value.SurveyQuestionId;
+        });
+
+        //Create the individual choice divs for the question.
+        for(let j = 0; j < choicesArray.length; j++)
+        {
+            let choiceDiv = $("<div>");
+            choiceDiv.addClass("choice-div");
+
+            let radioBtn = $("<input>");
+            radioBtn.attr("name", "data-question" + questions[i].id);
+            radioBtn.attr("data-choice", choicesArray[j].id);
+            radioBtn.attr("type", "radio");
+            radioBtn.addClass("radio-btn");
+            choiceDiv.append(radioBtn);
+
+            let choiceTextSpan  = $("<span>");
+            choiceTextSpan.text(choicesArray[j].description);
+            choiceDiv.append(choiceTextSpan);
+
+            let responseNum = $("<span>");
+            responseNum.addClass("response-num");
+            responseNum.attr("id", "data-choice-" + choicesArray[j].id);
+            responseNum.text(" (0)");
+            choiceDiv.append(responseNum);
+
+            choicesBlock.append(choiceDiv);
+        }
+
+        btnDiv = $("<div>");
+        btnDiv.addClass("btn-div");
+        questionDiv.append(btnDiv);
+
+        clearBtn = $("<button>");
+        clearBtn.addClass("btn btn-primary question-clear-btn");
+        clearBtn.attr("id", "clr-btn-" + questions[i].id);
+        clearBtn.append("Clear");
+        btnDiv.append(clearBtn);
+
+        //Clear button listener.
+
+
+
+
+
+
+        updateTime(); //Make sure to immediately disable expired surveys.
+        $("#questions-div").append(questionDiv);
+    }
+}
+
 //Display the survey when the page first loads.
 let buildSurvey = function()
 {
     if(debug)console.log(surveyData.survey[0]);
     if(debug)console.log(surveyData.data);
 
-    let commentsArray = surveyData.data.comments;
-    //lastComments = commentsArray.length;
-
     //Display the survey title.
     $("#survey-title").text(surveyData.survey[0].surveyTitle);
 
-    //Add initial comments to the survey.
-    /*
-    for(let i = 0; i < commentsArray.length; i++)
-    {
-        let username = commentsArray[i].username;
-        let comment = commentsArray[i].comment;
-        let commentText = "<b>" + username + ": </b>" + comment + "<br>";
-        $("#comments-div").append(commentText);
-    }
-    */
+    //Update the time remaining.
+    updateTime();
+    setInterval(function(){updateTime()}, 1000);
 
+    //Setup Google Maps and add markers.
+    geoInitialize();
 
-
-
-
+    showQuestions();
 }
 
 let getSurveyData = function()
@@ -107,42 +285,51 @@ let getSurveyData = function()
 let updateComments = function()
 {
     $.get("/api/numcomments/" + id)
-        .then(function(dbComments)
-        {
-            let numComments = dbComments.commentCount;
+    .then(function(dbComments)
+    {
+        let numComments = dbComments.commentCount;
             
-            //Check to see if there are any new comments since last check.
-            if(numComments > lastComments)
-            {
-                $.get("/api/surveycomments/" + id)
-                .then(function(dbComment)
-                {
-                    if(debug)console.log(dbComment);
-
-                    for(let i = lastComments; i < dbComment.length; i++)
-                    {
-                        let username = dbComment[i].username;
-                        let comment = dbComment[i].comment;
-                        let commentText = "<b>" + username + ": </b>" + comment + "<br>";
-                        $("#comments-div").append(commentText);
-                    }
-
-
-
-
-                    lastComments = numComments;
-                })
-                .fail(function(err)
-                {
-                    throw err;
-                });
-            }
-        })
-        .fail(function(err)
+        //Check to see if there are any new comments since last check.
+        if(numComments > lastComments)
         {
-            throw err;
-        });
+            $.get("/api/surveycomments/" + id)
+            .then(function(dbComment)
+            {
+                if(debug)console.log(dbComment);
+
+                for(let i = lastComments; i < dbComment.length; i++)
+                {
+                    let username = dbComment[i].username;
+                    let comment = dbComment[i].comment;
+                    let commentText = "<b>" + username + ": </b>" + comment + "<br>";
+                    $("#comments-div").append(commentText);
+                }
+
+                lastComments = numComments;
+            })
+            .fail(function(err)
+            {
+                throw err;
+            });
+        }
+    })
+    .fail(function(err)
+    {
+        throw err;
+    });
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //Send a user comment to the server.
@@ -151,6 +338,10 @@ let sendComment = function(event)
     event.preventDefault();
 
     let comment = $("#comment-text").val().trim();
+
+    //Exit if there is a blank comment.
+    if(comment === "")return;
+
     $("#comment-text").val("");
 
     //Send the POST request.
