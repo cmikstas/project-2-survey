@@ -376,8 +376,6 @@ module.exports = function(app)
     //Clear response for username and question.
     app.delete("/api/deleteresponse/:username/:question", isAuthenticated, function(req, res)
     {
-        console.log("**************************username:   " + req.params.username);
-        console.log("**************************questionId: " + req.params.question);
         db.SurveyResponse.destroy(
         {
             where:
@@ -389,6 +387,26 @@ module.exports = function(app)
         .then(function(dbSurveyTaker)
         {
             res.json(dbSurveyTaker);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Add a response to a survey.
+    app.post("/api/addresponse", isAuthenticated, function(req, res)
+    {
+        db.SurveyResponse.create(
+        {
+            username:       req.body.username,
+            surveyId:       req.body.surveyId,
+            questionId:     req.body.questionId,
+            SurveyChoiceId: req.body.surveyChoiceId
+        })
+        .then(function(result)
+        {
+            res.json({ inserted: true });
         })
         .catch(function(error)
         {
