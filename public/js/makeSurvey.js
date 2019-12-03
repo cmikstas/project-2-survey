@@ -58,7 +58,6 @@ $(document).ready(function ()
             for (let i = 0; i < data.length; i++)
             {
                 let userName = data[i].username;
-                //console.log(userName);
 
                 let userBox = $("<label>");
                 userBox.addClass("form-check-label mx-3");
