@@ -92,8 +92,9 @@ function addMarker(selectionObject)
 let geoInitialize = function()
 {
     let choices = surveyData.data.choices;
-    let lat = 0;
-    let lng = 0;
+    let lat  = 0;
+    let lng  = 0;
+    let zoom = 10;
     let validLat = 0;
     let validLng = 0;
 
@@ -119,8 +120,9 @@ let geoInitialize = function()
     //Make sure there is valid coordinates to center the map.
     if(isNaN(lat) || isNaN(lng))
     {
-        lat = 0;
-        lng = 0;
+        lat  = 0;
+        lng  = 0;
+        zoom = 0;
     }
     
     console.log("Lat: " + lat + ", Lon: " + lng);
@@ -129,7 +131,7 @@ let geoInitialize = function()
     map = new google.maps.Map(document.getElementById('map'),
     {
         center: { lat: lat, lng: lng },
-       	zoom: 9
+       	zoom: zoom
     });
 
     //Add choice markers to map.

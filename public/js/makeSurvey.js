@@ -66,7 +66,7 @@ $(document).ready(function ()
                 let addUserBtn = $("<button>");
                 addUserBtn.addClass("addUserBtns");
                 addUserBtn.attr("type", "button");
-                addUserBtn.attr("data-username", userName);
+                //addUserBtn.attr("data-username", userName);
 
                 let userBox = $("<label>");
                 userBox.addClass("form-check-label mx-3");
@@ -82,24 +82,23 @@ $(document).ready(function ()
 
                 addUserBtn.on("click", function (event)
                 {
-                    let addUserNameBtn = ($(this).attr("data-username"));
+                    //let addUserNameBtn = ($(this).attr("data-username"));
                     //console.log(addUserNameBtn);
                     
-
-                    if (!surveyUserArr.includes(addUserNameBtn))
+                    if (!surveyUserArr.includes(userName))
                     {
-                        surveyUserArr.push(addUserNameBtn);
+                        surveyUserArr.push(userName);
                         console.log(surveyUserArr);
 
-                        let deleteButtonIcon = "x";
+                        let deleteButtonIcon = "<span>&times</span>";
                         let deleteUserBtn = $("<button>");
                         deleteUserBtn.addClass("deleteUserBtns");
                         deleteUserBtn.attr("type", "button");
-                        deleteUserBtn.attr("data-username", addUserNameBtn);
+                        //deleteUserBtn.attr("data-username", userName);
 
                         let userBoxFinal = $("<label>");
                         userBoxFinal.addClass("form-check-label mx-3");
-                        userBoxFinal.append(addUserNameBtn);
+                        userBoxFinal.append(userName);
 
                         let userNameFinalDiv = $("<div>");
                         userNameFinalDiv.addClass("form-check");
@@ -111,31 +110,24 @@ $(document).ready(function ()
 
                         deleteUserBtn.on("click", function (event)
                         {
-                            let deleteUserNameBtn = ($(this).attr("data-username"));
+                            //let deleteUserNameBtn = ($(this).attr("data-username"));
                             //console.log(deleteUserNameBtn);
 
-                            if (surveyUserArr.includes(deleteUserNameBtn))
+                            //Returns the index of the user name in the array.
+                            //Returns -1 if not found. 
+                            let index = surveyUserArr.indexOf(userName);
+
+                            //Should always be found but check just to be safe.
+                            if(index >= 0)
                             {
-                                surveyUserArr.splice(deleteUserNameBtn, 1);
+                                surveyUserArr.splice(index, 1);
                                 console.log(surveyUserArr);
-                                userNameFinalDiv.empty();
+                                userNameFinalDiv.remove();
                             }
-                            else
-                            {
-                                return;
-                            }
-                            
                         });
                     }
-                    else
-                    {
-                        return;
-                    }
-                    
                 });
             }
-
-
         });
     }
 
