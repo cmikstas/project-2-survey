@@ -47,8 +47,10 @@
                 <div class="form-group">
                     <div>
                         <label class="survey-info" for="gPlaces">Search Google Places</label>
-                        <input type="text" class="form-control" id="gPlaces" placeholder="Search here...">
-                        <button type="button" class="btn btn-success mt-2">Search</button>
+                        <input type="text" class="form-control mt-2" id="gPlacesLocation" placeholder="Enter item to search">
+                        <input type="text" class="form-control mt-2" id="gPlacesState" placeholder="Enter city or state">
+                        <input type="text" class="form-control mt-2" id="gPlacesRadius" placeholder="Enter radius (In meters)">
+                        <button type="button" class="btn btn-success mt-2" id="gPlacesSearch">Search</button>
                     </div>
                     <div class="mt-2">
                         <p class="survey-info">
@@ -72,7 +74,7 @@
                 <div class="form-group">
                     <div>
                         <p class="survey-info">
-                            Add Users
+                            Add Users to Survey
                         </p>
                     </div>
                     <div id="userResults" class="border rounded bg-light mt-1" style="height: 100px;">
@@ -102,7 +104,7 @@
                             Added Users
                         </p>
                     </div>
-                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 100px;">
+                    <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 100px;">
 
                     </div>
                     <div class="mt-2 form-inline">
