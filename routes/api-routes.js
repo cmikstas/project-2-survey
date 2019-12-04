@@ -132,6 +132,7 @@ module.exports = function(app)
         });
     });
 
+    //Get all the users.
     app.get("/api/allusers", isAuthenticated, function(req, res)
     {
         db.User.findAll(
@@ -296,6 +297,120 @@ module.exports = function(app)
         .then(function(data)
         {
             res.json(data);
+        });
+    });
+
+    //Post a comment.
+    app.post("/api/postcomment", isAuthenticated, function(req, res)
+    {
+        db.SurveyComment.create(
+        {
+            username: req.body.username,
+            comment:  req.body.comment,
+            SurveyId: req.body.surveyId
+        })
+        .then(function(result)
+        {
+            res.json({ inserted: true });
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Get the number of comments for a specific survey.
+    app.get("/api/numcomments/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.SurveyComment.findAll(
+        {
+            where:
+            {
+                SurveyId: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json({commentCount: data.length });
+        });
+    });
+
+    //Get all the responses for a survey.
+    app.get("/api/surveyresponses/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.SurveyResponse.findAll(
+        {
+            where:
+            {
+                surveyId: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
+    //Get the number of responses for a survey.
+    app.get("/api/numresponses/:id", isAuthenticated, function(req, res)
+    {
+        let surveyId = parseInt(req.params.id);
+
+        db.SurveyResponse.findAll(
+        {
+            where:
+            {
+                surveyId: surveyId
+            }
+        })
+        .then(function(data)
+        {
+            res.json({ responseCount: data.length });
+        });
+    });
+
+    //Clear response for username and question.
+    app.delete("/api/deleteresponse/:username/:question", isAuthenticated, function(req, res)
+    {
+        db.SurveyResponse.destroy(
+        {
+            where:
+            {
+                username:   req.params.username,
+                questionId: req.params.question
+            }
+        })
+        .then(function(dbSurveyTaker)
+        {
+            res.json(dbSurveyTaker);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Add a response to a survey.
+    app.post("/api/addresponse", isAuthenticated, function(req, res)
+    {
+        db.SurveyResponse.create(
+        {
+            username:       req.body.username,
+            surveyId:       req.body.surveyId,
+            questionId:     req.body.questionId,
+            SurveyChoiceId: req.body.surveyChoiceId
+        })
+        .then(function(result)
+        {
+            res.json({ inserted: true });
+        })
+        .catch(function(error)
+        {
+            throw error;
         });
     });
 

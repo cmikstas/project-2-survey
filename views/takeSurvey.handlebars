@@ -18,6 +18,39 @@
 
 <h1 id="survey-title">take Survey</h1>
 
+<div class="container border rounded mb-2">
+    <div class="row">
+        <div class="col-md-8 border">
+            <div>
+                <span id="time-span">Time Remaining: </span><span id="this-time">Expired</span>
+            </div>
+
+            <!--Google Map Div-->
+            <div id="map" class="border rounded bg-light mt-2 mb-3" style="height: 400px;"></div>
+
+            <!--Survey Questions-->
+            <div id="questions-div"></div>
+        </div>
+
+        <div class="col-md-4 border">
+            <div class="mt-2">
+                <p class="survey-info">
+                    Comment History
+                </p>
+                <div id="comments-div" class="border rounded bg-light mt-2" style="height: 450px;"></div>
+            </div>
+
+            <form>
+                <div class=" form-group mt-2">
+                    <label for="comment-text" class="new-comment">Add New Comment</label>
+                    <input type="text" class="form-control" id="comment-text" placeholder="Enter comment...">
+                    <input type="submit" class="btn btn-success my-2" id="comment-btn" value="Send">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!--Bootstrap-->
 <script 
     src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
@@ -34,6 +67,9 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous">
 </script>
+
+<!--Google Maps-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKxzOdcZqXI85LSaL_dfADOeeWELc9igc&libraries=places&callback=initMap"></script>
 
 <!--Moment.js-->
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>

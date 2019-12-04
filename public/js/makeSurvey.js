@@ -7,9 +7,10 @@ var selectionArray  = [];
 
 var markers = [];
 
-$(document).ready(function () 
+$(document).ready(function ()
 {
     geoInitialize();
+    googlePlacesSearch()
     pullUsers();
     
     $("#comment-btn").on("click", function (event)
@@ -58,29 +59,133 @@ $(document).ready(function ()
             for (let i = 0; i < data.length; i++)
             {
                 let userName = data[i].username;
+
+                let buttonIcon = "+";
                 //console.log(userName);
+
+                let addUserBtn = $("<button>");
+                addUserBtn.addClass("addUserBtns");
+                addUserBtn.attr("type", "button");
+                addUserBtn.attr("data-username", userName);
 
                 let userBox = $("<label>");
                 userBox.addClass("form-check-label mx-3");
                 userBox.append(userName);
 
-                let checkbox = $("<input>");
-                checkbox.addClass("form-check-input");
-                checkbox.attr("type", "checkbox");
-                checkbox.attr("data-username", userName);
-
                 let userNameDiv = $("<div>");
                 userNameDiv.addClass("form-check");
 
-                userNameDiv.append(checkbox);
+                addUserBtn.append(buttonIcon);
+                userNameDiv.append(addUserBtn);
                 userNameDiv.append(userBox);
                 $("#userResults").append(userNameDiv);
+
+                addUserBtn.on("click", function (event)
+                {
+                    let addUserNameBtn = ($(this).attr("data-username"));
+                    //console.log(addUserNameBtn);
+                    
+
+                    if (!surveyUserArr.includes(addUserNameBtn))
+                    {
+                        surveyUserArr.push(addUserNameBtn);
+                        console.log(surveyUserArr);
+
+                        let deleteButtonIcon = "x";
+                        let deleteUserBtn = $("<button>");
+                        deleteUserBtn.addClass("deleteUserBtns");
+                        deleteUserBtn.attr("type", "button");
+                        deleteUserBtn.attr("data-username", addUserNameBtn);
+
+                        let userBoxFinal = $("<label>");
+                        userBoxFinal.addClass("form-check-label mx-3");
+                        userBoxFinal.append(addUserNameBtn);
+
+                        let userNameFinalDiv = $("<div>");
+                        userNameFinalDiv.addClass("form-check");
+
+                        deleteUserBtn.append(deleteButtonIcon);
+                        userNameFinalDiv.append(deleteUserBtn);
+                        userNameFinalDiv.append(userBoxFinal);
+                        $("#usersAdded").append(userNameFinalDiv);
+
+                        deleteUserBtn.on("click", function (event)
+                        {
+                            let deleteUserNameBtn = ($(this).attr("data-username"));
+                            //console.log(deleteUserNameBtn);
+
+                            if (surveyUserArr.includes(deleteUserNameBtn))
+                            {
+                                surveyUserArr.splice(deleteUserNameBtn, 1);
+                                console.log(surveyUserArr);
+                                userNameFinalDiv.empty();
+                            }
+                            else
+                            {
+                                return;
+                            }
+                            
+                        });
+                    }
+                    else
+                    {
+                        return;
+                    }
+                    
+                });
             }
 
-            checkbox.on("click", function (event)
-            {
-                
-            });
+
         });
+    }
+
+    function googlePlacesSearch()
+    {
+        $("#gPlacesSearch").on("click", function (event)
+        {
+            let googleLocation = $("#gPlacesLocation").val().trim();
+            let googleState = $("#gPlacesState").val().trim();
+
+            let query = googleLocation + ", " + googleState;
+            //console.log(query);
+
+            let radius = $("#gPlacesRadius").val().trim();
+            let radiusInt = parseInt(radius);
+            //console.log(radius);
+
+            if (googleLocation !== "" && googleState !== "" && radiusInt !== "")
+            {
+                if(isNaN(radiusInt))
+                {
+                    console.log("radius must be an integer");
+                    return;
+                }
+
+                $.ajax("/api/places/" + query + "/" + radius,
+                {
+                    type: "GET"
+                }).then(function(data)
+                {
+                //console.log(data);
+
+                for (let i = 0; i < data.length; i++)
+                {
+                    let address = data[i].formatted_address;
+                    let latLong = data[i].geometry.location;
+                    let name = data[i].name;
+                    //console.log(address);
+                    //console.log(latLong);
+                    console.log(name);
+                }
+
+                });
+            }
+            else
+            {
+                console.log("Please make valid selections");
+                return;
+            }
+        });
+        
     }
 });

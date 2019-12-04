@@ -74,7 +74,7 @@ INSERT INTO surveytakers (username, isRead, isStarred, createdAt, updatedAt, Sur
 
 -- Create an active survey.
 INSERT INTO surveys (surveyTitle, startTime, stopTime, createdAt, updatedAt, UserId) VALUES
-('The super duper test survey!', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 30 MINUTE, NOW(), NOW(), 3);
+('The super duper test survey!', NOW() - INTERVAL 1 HOUR, NOW() + INTERVAL 10 MINUTE, NOW(), NOW(), 3);
 
 -- Add the survey takers.
 INSERT INTO surveytakers (username, isRead, isStarred, createdAt, updatedAt, SurveyId) VALUES
@@ -97,38 +97,40 @@ INSERT INTO surveychoices (description, isGoogle, selectedCount, latitude, longi
 ("The Living Room Trailhead" , true, 0, 40.7593145       , -111.8212911, 13, NOW(), NOW(), 1),
 ("Ensign Peak Trailhead"     , true, 0, 40.79179389999999, -111.8882277, 13, NOW(), NOW(), 1),
 ("Dry Gulch Trail Head"      , true, 0, 40.7776817       , -111.8372154, 13, NOW(), NOW(), 1),
-("Bonneville Shoreline Trail", true, 0, 40.8049732       , -111.8880899, 13, NOW(), NOW(), 1),
 
 ("Julia's Mexican Restaurant", true, 0, 40.7678486       , -111.9194399, 13, NOW(), NOW(), 2),
 ("El Asadero Mexican Food"   , true, 0, 40.7712036       , -111.9203752, 13, NOW(), NOW(), 2),
 ("Red Iguana"                , true, 0, 40.7718527       , -111.912516 , 13, NOW(), NOW(), 2),
-("Chile-Tepin"               , true, 0, 40.76471799999999, -111.900093 , 13, NOW(), NOW(), 2),
 
 ("Megaplex Theatres at The Gateway", true, 0, 40.76615700000001, -111.903684 , 13, NOW(), NOW(), 3),
 ("Century 16 Salt Lake and XD"     , true, 0, 40.7001907       , -111.8872638, 13, NOW(), NOW(), 3),
-("Tower Theatre"                   , true, 0, 40.7495678       , -111.8659653, 13, NOW(), NOW(), 3),
 ("Cinemark Sugarhouse"             , true, 0, 40.7222068       , -111.8576769, 13, NOW(), NOW(), 3),
 
 ("Yes", false, 0, null, null, 13, NOW(), NOW(), 4),
-("No" , false, 0, null, null, 13, NOW(), NOW(), 4),
 
 ("Not helpful"     , false, 0, null, null, 13, NOW(), NOW(), 5),
 ("Somewhat helpful", false, 0, null, null, 13, NOW(), NOW(), 5),
 ("Helpful"         , false, 0, null, null, 13, NOW(), NOW(), 5),
-("Very helpful"    , false, 0, null, null, 13, NOW(), NOW(), 5);
+
+("No" , false, 0, null, null, 13, NOW(), NOW(), 4),
+("Bonneville Shoreline Trail", true, 0, 40.8049732       , -111.8880899, 13, NOW(), NOW(), 1),
+("Tower Theatre"                   , true, 0, 40.7495678       , -111.8659653, 13, NOW(), NOW(), 3),
+("Very helpful"    , false, 0, null, null, 13, NOW(), NOW(), 5),
+("Chile-Tepin"               , true, 0, 40.76471799999999, -111.900093 , 13, NOW(), NOW(), 2);
 
 -- Add survey responses.
-INSERT INTO surveyresponses(username, surveyId, createdAt, updatedAt, SurveyChoiceId) VALUES
-("test"    , 13, NOW(), NOW(), 2),
-("Jennifer", 13, NOW(), NOW(), 2),
-("test"    , 13, NOW(), NOW(), 5),
-("test"    , 13, NOW(), NOW(), 14),
-("test"    , 13, NOW(), NOW(), 15),
-("Hank"    , 13, NOW(), NOW(), 6),
-("Hannah"  , 13, NOW(), NOW(), 2),
-("Greg"    , 13, NOW(), NOW(), 1),
-("Greg"    , 13, NOW(), NOW(), 7),
-("Hank"    , 13, NOW(), NOW(), 1);
+INSERT INTO surveyresponses(username, surveyId, questionId, createdAt, updatedAt, SurveyChoiceId) VALUES
+("test"    , 13, 5, NOW(), NOW(), 13),
+("Jennifer", 13, 1, NOW(), NOW(), 2),
+("test"    , 13, 2, NOW(), NOW(), 5),
+("test"    , 13, 4, NOW(), NOW(), 14),
+("test"    , 13, 1, NOW(), NOW(), 15),
+("Hank"    , 13, 2, NOW(), NOW(), 6),
+("Hannah"  , 13, 1, NOW(), NOW(), 2),
+("Greg"    , 13, 1, NOW(), NOW(), 1),
+("Greg"    , 13, 3, NOW(), NOW(), 7),
+("Hank"    , 13, 1, NOW(), NOW(), 1),
+("Hank"    , 13, 5, NOW(), NOW(), 17);
 
 -- Add survey comments.
 INSERT INTO surveycomments(comment, username, createdAt, updatedAt, SurveyId) VALUES
