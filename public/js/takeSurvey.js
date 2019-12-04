@@ -200,11 +200,6 @@ let showQuestions = function()
                     type: "DELETE"
                 }).then(function()
                 {
-                    //username:       req.body.username,
-                    //surveyId:       req.body.surveyId,
-                    //questionId:     req.body.questionId,
-                    //SurveyChoiceId: req.body.surveyChoiceId
-
                     //Post the new response.
                     $.ajax("/api/addresponse",
                     {
@@ -268,14 +263,6 @@ let showQuestions = function()
     }
 }
 
-
-
-
-
-
-
-
-
 //Check for new survey responses and update the survey if necessary.
 let updateSurveyResponses = function()
 {
@@ -329,13 +316,6 @@ let updateSurveyResponses = function()
         throw err;
     });
 }
-
-
-
-
-
-
-
 
 //Display the survey when the page first loads.
 let buildSurvey = function()
@@ -427,19 +407,6 @@ let updateComments = function()
         throw err;
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //Send a user comment to the server.
 let sendComment = function(event)
