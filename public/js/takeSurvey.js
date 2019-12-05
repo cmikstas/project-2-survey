@@ -92,8 +92,9 @@ function addMarker(selectionObject)
 let geoInitialize = function()
 {
     let choices = surveyData.data.choices;
-    let lat = 0;
-    let lng = 0;
+    let lat  = 0;
+    let lng  = 0;
+    let zoom = 10;
     let validLat = 0;
     let validLng = 0;
 
@@ -119,8 +120,9 @@ let geoInitialize = function()
     //Make sure there is valid coordinates to center the map.
     if(isNaN(lat) || isNaN(lng))
     {
-        lat = 0;
-        lng = 0;
+        lat  = 0;
+        lng  = 0;
+        zoom = 0;
     }
     
     console.log("Lat: " + lat + ", Lon: " + lng);
@@ -129,7 +131,7 @@ let geoInitialize = function()
     map = new google.maps.Map(document.getElementById('map'),
     {
         center: { lat: lat, lng: lng },
-       	zoom: 9
+       	zoom: zoom
     });
 
     //Add choice markers to map.
@@ -200,11 +202,6 @@ let showQuestions = function()
                     type: "DELETE"
                 }).then(function()
                 {
-                    //username:       req.body.username,
-                    //surveyId:       req.body.surveyId,
-                    //questionId:     req.body.questionId,
-                    //SurveyChoiceId: req.body.surveyChoiceId
-
                     //Post the new response.
                     $.ajax("/api/addresponse",
                     {
@@ -220,7 +217,7 @@ let showQuestions = function()
                     .then(function(data)
                     {
                         lastResponses--;
-                        if(debug)console.log("Response Posted");
+                        if(debug)console.log("Response Id: " + data.id);
                     });
                 });
             });
@@ -267,14 +264,6 @@ let showQuestions = function()
         $("#questions-div").append(questionDiv);
     }
 }
-
-
-
-
-
-
-
-
 
 //Check for new survey responses and update the survey if necessary.
 let updateSurveyResponses = function()
@@ -329,13 +318,6 @@ let updateSurveyResponses = function()
         throw err;
     });
 }
-
-
-
-
-
-
-
 
 //Display the survey when the page first loads.
 let buildSurvey = function()
@@ -410,7 +392,10 @@ let updateComments = function()
                 {
                     let username = dbComment[i].username;
                     let comment = dbComment[i].comment;
-                    let commentText = "<b>" + username + ": </b>" + comment + "<br>";
+                    let commentText = $("<div>");
+                    commentText.attr("contenteditable", "true");
+                    commentText.addClass("mx-2");
+                    commentText.html("<b>" + username + ": </b>" + comment + "<br>");
                     $("#comments-div").append(commentText);
                 }
 
@@ -427,19 +412,6 @@ let updateComments = function()
         throw err;
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //Send a user comment to the server.
 let sendComment = function(event)
@@ -466,7 +438,7 @@ let sendComment = function(event)
     })
     .then(function(data)
     {
-        if(debug)console.log("Comment Posted");
+        if(debug)console.log("Comment Id:" + data.id);
     });
 }
 
