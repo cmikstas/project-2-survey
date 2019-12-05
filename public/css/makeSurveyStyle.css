@@ -12,12 +12,7 @@
     font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
 }
 
-#userResults
-{
-    overflow: auto;
-}
-
-#usersAdded
+#userResults, #usersAdded, #distroDiv, #commentsDiv, #gPlacesResults, #questionOptions
 {
     overflow: auto;
 }
@@ -37,6 +32,23 @@
     cursor: pointer;
  }
 
+ .deleteQBtn
+ {
+    /**height: 20px;**/
+    background-color: #f44336;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    /**padding: 5px 5px;**/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin-top: 5px;
+    padding: 7px 12px 7px 12px;
+    cursor: pointer; 
+ }
+
  .deleteUserBtns
  {
     /**height: 20px;**/
@@ -51,6 +63,37 @@
     margin-top: 2px;
     cursor: pointer;
  }
+
+ .addPlacesButton
+ {
+    /**height: 20px;**/
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    /**padding: 5px 5px;**/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    margin-top: 2px;
+    cursor: pointer;
+ }
+
+ .question-text
+{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f1f1f;
+    border-bottom: 5px solid black;
+}
+
+.question-block
+{
+    /**border-bottom: 3px solid rgb(24, 100, 28);**/
+    margin: .5rem 0;
+    padding: .5rem;
+    text-align: left;
+}
 
 /******************************************** Navbar *********************************************/
 .navbar-header
@@ -101,8 +144,10 @@
 	width: 100%;
 }
 
-#commentsDiv
+/********************************************** Misc ***********************************************/
+
+.not-valid
 {
-    overflow: auto;
+    box-shadow: 0 0 0 .2rem #ff0000;
 }
 

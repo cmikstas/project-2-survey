@@ -311,7 +311,7 @@ module.exports = function(app)
         })
         .then(function(result)
         {
-            res.json({ inserted: true });
+            res.json(result);
         })
         .catch(function(error)
         {
@@ -406,7 +406,7 @@ module.exports = function(app)
         })
         .then(function(result)
         {
-            res.json({ inserted: true });
+            res.json(result);
         })
         .catch(function(error)
         {
@@ -414,6 +414,60 @@ module.exports = function(app)
         });
     });
 
+    //post a new distribution list for a user.
+    app.post("/api/addlist", isAuthenticated, function(req, res)
+    {
+        db.DistributionList.create(
+        {
+            username: req.body.username,
+            list:   req.body.list,
+            title:  req.body.title
+        })
+        .then(function(result)
+        {
+            res.json(result);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Get all distribution lists for a user.
+    app.get("/api/getdistros/:username", isAuthenticated, function(req, res)
+    {
+        db.DistributionList.findAll(
+        {
+            where:
+            {
+                username: req.params.username
+            }
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
+    //Delete a distribution list for a user.
+    app.delete("/api/deletedistro/:id", isAuthenticated, function(req, res)
+    {
+        db.DistributionList.destroy(
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        .then(function(dbDistro)
+        {
+            res.json(dbDistro);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
     
 
 
