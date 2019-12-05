@@ -22,6 +22,16 @@
     overflow: auto;
 }
 
+#gPlacesResults
+{
+    overflow: auto;
+}
+
+#questionOptions
+{
+    overflow: auto;
+}
+
 .addUserBtns
 {
     /**height: 20px;**/
@@ -41,6 +51,21 @@
  {
     /**height: 20px;**/
     background-color: #f44336;
+    border: none;
+    color: white;
+    /**padding: 5px 5px;**/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    margin-top: 2px;
+    cursor: pointer;
+ }
+
+ .addPlacesButton
+ {
+    /**height: 20px;**/
+    background-color: #008CBA;
     border: none;
     color: white;
     /**padding: 5px 5px;**/

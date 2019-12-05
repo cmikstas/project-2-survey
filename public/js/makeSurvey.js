@@ -1,7 +1,8 @@
 var map;
 
-var userCommentsArr = [];
-var surveyUserArr   = [];
+var userCommentsArr     = [];
+var surveyUserArr       = [];
+var questionOptionsArr  = [];
 
 var selectionArray  = [];
 
@@ -175,7 +176,73 @@ $(document).ready(function ()
                     let name = data[i].name;
                     //console.log(address);
                     //console.log(latLong);
-                    console.log(name);
+                    //console.log(name);
+
+                    let placesBtnIcon = "+";
+                    let placesBtn = $("<button>");
+                    placesBtn.addClass("addPlacesButton");
+                    placesBtn.attr("type", "button");
+                    placesBtn.attr("data-username", name);
+
+                    let placesBox = $("<label>");
+                    placesBox.addClass("form-check-label mx-3");
+                    placesBox.append(name);
+
+                    let placesResult = $("<div>");
+                    placesResult.addClass("form-check");
+
+                    placesBtn.append(placesBtnIcon);
+                    placesResult.append(placesBtn);
+                    placesResult.append(placesBox);
+
+                    $("#gPlacesResults").append(placesResult);
+
+                    placesBtn.on("click", function (event)
+                    {
+                        let surveyOption = ($(this).attr("data-username"));
+                        //console.log(surveyOption);
+
+                        if (!questionOptionsArr.includes(surveyOption))
+                        {
+                            questionOptionsArr.push(surveyOption);
+                            console.log(questionOptionsArr);
+
+                            let deleteOptionIcon = "x";
+                            let deleteOptionBtn = $("<button>");
+                            deleteOptionBtn.addClass("deleteUserBtns");
+                            deleteOptionBtn.attr("type", "button");
+                            deleteOptionBtn.attr("data-username", surveyOption);
+
+                            let questionBox = $("<label>");
+                            questionBox.addClass("form-check-label mx-3");
+                            questionBox.append(surveyOption);
+
+                            let questionDiv = $("<div>");
+                            questionDiv.addClass("form-check");
+
+                            deleteOptionBtn.append(deleteOptionIcon);
+                            questionDiv.append(deleteOptionBtn);
+                            questionDiv.append(questionBox);
+                            $("#questionOptions").append(questionDiv);
+
+                            deleteOptionBtn.on("click", function (event)
+                            {
+                                let surveyOption2 = ($(this).attr("data-username"));
+                                //console.log(deleteUserNameBtn);
+    
+                                if (questionOptionsArr.includes(surveyOption2))
+                                {
+                                    questionOptionsArr.splice(surveyOption2, 1);
+                                    console.log(questionOptionsArr);
+                                    questionDiv.empty();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    });
                 }
 
                 });
