@@ -82,7 +82,7 @@ $(document).ready(function()
         })
         .then(function(data)
         {
-            window.location.replace("/home");
+            window.location.assign("/home");
         })
         .catch(function(err) //Check for existing user.
         {

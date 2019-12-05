@@ -111,7 +111,7 @@ let showSurveys = function()
             .then(function()
             {
                 if(debug)console.log("Take Survey: " + surveyId);
-                window.location.replace("/takesurvey/" +  surveyId);
+                window.location.assign("/takesurvey/" +  surveyId);
             });
         })
 
@@ -161,7 +161,7 @@ let showSurveys = function()
             .then(function()
             {
                 if(debug)console.log("View Survey: " + surveyId);
-                window.location.replace("/takesurvey/" +  surveyId);
+                window.location.assign("/takesurvey/" +  surveyId);
             });
         })
 
