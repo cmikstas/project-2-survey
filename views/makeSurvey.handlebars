@@ -10,10 +10,10 @@
     <div class="container">
         <div class="navbar-header">
             <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! Unread Surveys:</div><div id="unread-div">0</div>
-            <a class="navbar-logout" href="/logout">
+            <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')" href="/logout">
                 Logout
             </a>
-            <a class="navbar-logout" href="/home">
+            <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')" href="/home">
                 Home
             </a>
         </div>
