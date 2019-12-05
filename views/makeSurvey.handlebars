@@ -67,52 +67,6 @@
                     </div>
                 </div>
             </form>
-
-            <!--Add User-->
-            <form class="mt-2 border-bottom">
-                <div class="form-group">
-                    <div>
-                        <p class="survey-info">
-                            Add Users to Survey
-                        </p>
-                    </div>
-                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 250px;">
-
-                    </div>
-                    <button type="button" class="btn btn-primary mt-2" id="refresh-users">Refresh</button>
-                </div>
-            </form>
-            <form class="mt-2 border-bottom">
-                <div class="form-group">
-                    <div>
-                        <p class="survey-info">
-                            Distribution Lists
-                        </p>
-                    </div>
-
-                    <!--Distribution Lists-->
-                    <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;"></div>
-
-                </div>
-            </form>
-            <form class="mt-2">
-                <div class="form-group">
-                    <div>
-                        <p class="survey-info">
-                            Added Users
-                        </p>
-                    </div>
-                    <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 250px;"></div>
-
-                    <form>
-                        <div class="form-group mt-2">
-                            <label for="distro-text"><p class="survey-info">Create Distribution List</p></label>
-                            <input type="text" class="form-control" id="distro-text" placeholder="List name...">
-                            <input type="submit" class="btn btn-success my-2" id="distro-btn" value="Save">
-                        </div>
-                    </form>
-                </div>
-            </form>
         </div>
 
         <!--NEW SURVEY COLUMN-->
@@ -135,13 +89,15 @@
                     </div>
                 </div>
 
-                
-                <div class='input-group date' id='datetimepicker4'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>         
+                <div class="form-group">
+                    <label class="survey-info" for="startTime">End Time</label>
+                    <div class='input-group date' id='datetimepicker4'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>      
+                </div>   
         
                 <button type="button" class="btn btn-primary mt-2 mb-3">Create Survey</button>
             </form>
@@ -163,11 +119,60 @@
 
         <!--COMMENT COLUMN-->
         <div class="col-md-4 border">
+
+            <!--Add User-->
+            <form class="mt-2">
+                <div class="form-group">
+                    <div>
+                        <p class="survey-info">
+                            Add Users to Survey
+                        </p>
+                    </div>
+                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 250px;">
+
+                    </div>
+                    <button type="button" class="btn btn-primary mt-2" id="refresh-users">Refresh</button>
+                </div>
+            </form>
+
+            <form class="mt-2 border-bottom">
+                <div class="form-group">
+                    <div>
+                        <p class="survey-info">
+                            Users Participating in this Survey
+                        </p>
+                    </div>
+                    <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 250px;"></div>
+                </div>
+            </form>
+
+            <form>
+                <div class="form-group mt-2">
+                    <label for="distro-text"><p class="survey-info">Create Distribution List</p></label>
+                    <input type="text" class="form-control" id="distro-text" placeholder="List name...">
+                    <input type="submit" class="btn btn-success my-2" id="distro-btn" value="Save">
+                </div>
+            </form>
+
+            <form class="mt-2 border-bottom">
+                <div class="form-group">
+                    <div>
+                        <p class="survey-info">
+                            Distribution Lists
+                        </p>
+                    </div>
+
+                    <!--Distribution Lists-->
+                    <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;"></div>
+
+                </div>
+            </form>
+
             <div class="mt-2">
                 <p class="survey-info">
                     Comment History
                 </p>
-                <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 450px;">
+                <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 250px;">
 
                 </div>
             </div>
@@ -211,8 +216,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="js/makeSurvey.js"></script>
-<script type="text/javascript" src="js/makeSurvey2.js"></script>
-
 <script src="js/bootstrap-datetimepicker.js"></script>
 
 <script type="text/javascript">
