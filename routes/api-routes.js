@@ -311,7 +311,7 @@ module.exports = function(app)
         })
         .then(function(result)
         {
-            res.json({ inserted: true });
+            res.json(result);
         })
         .catch(function(error)
         {
@@ -406,7 +406,7 @@ module.exports = function(app)
         })
         .then(function(result)
         {
-            res.json({ inserted: true });
+            res.json(result);
         })
         .catch(function(error)
         {

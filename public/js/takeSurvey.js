@@ -217,7 +217,7 @@ let showQuestions = function()
                     .then(function(data)
                     {
                         lastResponses--;
-                        if(debug)console.log("Response Posted");
+                        if(debug)console.log("Response Id: " + data.id);
                     });
                 });
             });
@@ -392,7 +392,10 @@ let updateComments = function()
                 {
                     let username = dbComment[i].username;
                     let comment = dbComment[i].comment;
-                    let commentText = "<b>" + username + ": </b>" + comment + "<br>";
+                    let commentText = $("<div>");
+                    commentText.attr("contenteditable", "true");
+                    commentText.addClass("mx-2");
+                    commentText.html("<b>" + username + ": </b>" + comment + "<br>");
                     $("#comments-div").append(commentText);
                 }
 
@@ -435,7 +438,7 @@ let sendComment = function(event)
     })
     .then(function(data)
     {
-        if(debug)console.log("Comment Posted");
+        if(debug)console.log("Comment Id:" + data.id);
     });
 }
 

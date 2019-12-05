@@ -24,22 +24,22 @@
     <h1>Make New Survey</h1>
 </div>
 
+<div id="page-body" style="text-align: left;">
 <div class="container border rounded mb-2">
     <div class="row">
 
         <!--NEW SURVEY QUESTION COLUMN-->
-
         <div class="col-md-4 border">
             <form class="border-bottom mt-2">
                 <div class="form-group">
                     <label class="survey-info" for="surveyQuestion">Question Creator</label>
                     <input type="text" class="form-control" id="surveyQuestion"
                         placeholder="Enter new question name...">
-                    <label class="survey-info mt-2">Question Options</label>
+                    <label class="survey-info mt-2">Question Choices</label>
                     <div id="questionOptions" class="border rounded bg-light" style="height: 100px;">
 
                     </div>
-                    <button type="button" class="btn btn-primary mt-2">Add Question</button>
+                    <button type="button" class="btn btn-success mt-2">Add Question</button>
                     <button type="button" class="btn btn-danger mt-2">Clear Question</button>
                 </div>
             </form>
@@ -50,26 +50,25 @@
                         <input type="text" class="form-control mt-2" id="gPlacesLocation" placeholder="Enter item to search">
                         <input type="text" class="form-control mt-2" id="gPlacesState" placeholder="Enter city or state">
                         <input type="text" class="form-control mt-2" id="gPlacesRadius" placeholder="Enter radius (In meters)">
-                        <button type="button" class="btn btn-success mt-2" id="gPlacesSearch">Search</button>
+                        <button type="button" class="btn btn-primary mt-2" id="gPlacesSearch">Search</button>
                     </div>
                     <div class="mt-2">
                         <p class="survey-info">
-                            Results
+                            Search Results
                         </p>
                         <div id="gPlacesResults" class="border rounded bg-light" style="height: 100px;">
 
                         </div>
                     </div>
                     <div class="mt-2">
-                        <label class="survey-info" for="customQ">Add Custom Option</label>
-                        <input type="text" class="form-control" id="customQ" placeholder="Add custom item...">
-                        <button type="button" class="btn btn-success mt-2">Add Option</button>
+                        <label class="survey-info" for="customQ">Add Custom Choice</label>
+                        <input type="text" class="form-control" id="customQ" placeholder="Choice text...">
+                        <button type="button" class="btn btn-success mt-2">Add Choice</button>
                     </div>
                 </div>
             </form>
 
             <!--Add User-->
-            
             <form class="mt-2 border-bottom">
                 <div class="form-group">
                     <div>
@@ -77,24 +76,23 @@
                             Add Users to Survey
                         </p>
                     </div>
-                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 100px;">
+                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 250px;">
 
                     </div>
-                    <button type="button" class="btn btn-success mt-2" id="addUserBtn">Add Users</button>
+                    <button type="button" class="btn btn-primary mt-2" id="refresh-users">Refresh</button>
                 </div>
             </form>
             <form class="mt-2 border-bottom">
                 <div class="form-group">
                     <div>
                         <p class="survey-info">
-                            Add Distribution List
+                            Distribution Lists
                         </p>
                     </div>
-                    <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;">
 
-                    </div>
-                    <button type="button" class="btn btn-success mt-2">Add List to Survey</button>
-                    <button type="button" class="btn btn-danger mt-2">Delete List</button>
+                    <!--Distribution Lists-->
+                    <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;"></div>
+
                 </div>
             </form>
             <form class="mt-2">
@@ -104,20 +102,20 @@
                             Added Users
                         </p>
                     </div>
-                    <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 100px;">
+                    <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 250px;"></div>
 
-                    </div>
-                    <div class="mt-2 form-inline">
-                        <input type="text" class="form-control mr-2 w-70" id="surveyQuestion"
-                            placeholder="New list name...">
-                        <button type="button" class="btn btn-success">Save List</button>
-                    </div>
+                    <form>
+                        <div class="form-group mt-2">
+                            <label for="distro-text"><p class="survey-info">Create Distribution List</p></label>
+                            <input type="text" class="form-control" id="distro-text" placeholder="List name...">
+                            <input type="submit" class="btn btn-success my-2" id="distro-btn" value="Save">
+                        </div>
+                    </form>
                 </div>
             </form>
         </div>
 
         <!--NEW SURVEY COLUMN-->
-
         <div class="col-md-4 border">
             <form class="border-bottom mt-2">
                 <div class="form-group">
@@ -145,10 +143,9 @@
                     </span>
                 </div>         
         
-                
-                <button type="button" class="btn btn-primary mb-3">Create Survey</button>
-
+                <button type="button" class="btn btn-primary mt-2 mb-3">Create Survey</button>
             </form>
+
             <div class="border-bottom pt-2">
                 <p class="survey-info">Google Maps Results</p>
                 <div id="map" class="border rounded bg-light mt-2 mb-3" style="height: 400px;">
@@ -158,32 +155,40 @@
 
             <div class="border-bottom pt-2">
                 <p class="survey-info">Survey Questions</p>
-                <div id="gMapsDiv" class="border rounded bg-light mt-2 mb-3" style="height: 300px;">
+                <div id="gMapsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;">
 
                 </div>
             </div>
         </div>
 
         <!--COMMENT COLUMN-->
-
         <div class="col-md-4 border">
             <div class="mt-2">
                 <p class="survey-info">
                     Comment History
                 </p>
-                <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 250px;">
+                <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 450px;">
 
                 </div>
             </div>
-            <div class="mt-2">
-                <label class="survey-info">Add New Comment</label>
-                <input type="text" class="form-control addComment" placeholder="Enter comment...">
-                <button type="button" class="btn btn-success mt-2" id="comment-btn">Send</button>
-            </div>
-        </div>
 
+            <form>
+                <div class="form-group mt-2">
+                    <label for="comment-text" class="survey-info">Add New Comment</label>
+                    <input type="text" class="form-control" id="comment-text" placeholder="Enter comment...">
+                    <input type="submit" class="btn btn-success my-2" id="comment-btn" value="Send">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+</div>
+
+<footer id="sticky-footer" class="pt-4 pb-1 mt-4">
+    <div class="container text-center">
+        <small>&copy;Project 2</small>
+    </div>
+</footer>
 
 <!--Moment-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
@@ -206,6 +211,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="js/makeSurvey.js"></script>
+<script type="text/javascript" src="js/makeSurvey2.js"></script>
 
 <script src="js/bootstrap-datetimepicker.js"></script>
 
