@@ -15,8 +15,10 @@ $(document).ready(function ()
     
     $("#comment-btn").on("click", function (event)
     {
+        event.preventDefault();
+
         let userName    = $(".navbar-user").attr("data-username");
-        let userComment = $(".addComment").val().trim();
+        let userComment = $("#comment-text").val().trim();
         let fullComment = "<b>" + userName + "</b>" + ": " + userComment;
         let commentDiv  = $("<div>");
 
@@ -25,7 +27,7 @@ $(document).ready(function ()
 
         commentDiv.append(fullComment);
         $("#commentsDiv").append(commentDiv);
-        $(".addComment").val("");
+        $("#comment-text").val("");
 
         let commentDetails =
         {
