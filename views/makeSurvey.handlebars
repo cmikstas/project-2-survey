@@ -39,8 +39,8 @@
                     <div id="questionOptions" class="border rounded bg-light" style="height: 100px;">
 
                     </div>
-                    <button type="button" class="btn btn-success mt-2">Add Question</button>
-                    <button type="button" class="btn btn-danger mt-2">Clear Question</button>
+                    <button type="button" id="addQ" class="btn btn-success mt-2">Add Question</button>
+                    <button type="button" id="clearQ" class="btn btn-danger mt-2">Clear Question</button>
                 </div>
             </form>
             <form class="border-bottom mt-2">
@@ -63,7 +63,7 @@
                     <div class="mt-2">
                         <label class="survey-info" for="customQ">Add Custom Choice</label>
                         <input type="text" class="form-control" id="customQ" placeholder="Choice text...">
-                        <button type="button" class="btn btn-success mt-2">Add Choice</button>
+                        <button type="button" id="customQBtn" class="btn btn-success mt-2">Add Choice</button>
                     </div>
                 </div>
             </form>
@@ -111,7 +111,7 @@
 
             <div class="border-bottom pt-2">
                 <p class="survey-info">Survey Questions</p>
-                <div id="gMapsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;">
+                <div id="surveyQuestionsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;">
 
                 </div>
             </div>

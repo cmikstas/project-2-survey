@@ -3,17 +3,23 @@ var map;
 
 var userCommentsArr    = [];
 var surveyUserArr      = [];
-var questionOptionsArr = [];
 var selectionArray     = [];
 var markers            = [];
+
+var questionOptionsArr = [];
+var surveyQuestionsArr = [];
+var totalQuestionsArr  = [];
+
+var mapSelectionArray  = [];
 
 $(document).ready(function ()
 {
     geoInitialize();
     googlePlacesSearch()
     pullUsers();
-
-    //***************************************** New Stuff *****************************************
+    addCustomQuestion();
+    clearQuestion();
+    addQuestion();
 
     let showDistros = function()
     {
@@ -198,16 +204,21 @@ $(document).ready(function ()
 
 
 
-    //*********************************************************************************************
-    
+
     $("#comment-btn").on("click", function (event)
     {
         event.preventDefault();
 
-        let userName    = $(".navbar-user").attr("data-username");
+        //Exit if user comment is blank.
+        if($("#comment-text").val().trim() === "")
+        {
+            return;
+        }
+
+        let userName = $(".navbar-user").attr("data-username");
         let userComment = $("#comment-text").val().trim();
         let fullComment = "<b>" + userName + "</b>" + ": " + userComment;
-        let commentDiv  = $("<div>");
+        let commentDiv = $("<div>");
 
         commentDiv.attr("contenteditable", "true");
         commentDiv.addClass("mx-2");
@@ -235,16 +246,15 @@ $(document).ready(function ()
             zoom: 9
         });
     }
-    
+
     function pullUsers()
     {
         $.ajax("/api/allusers",
         {
             type: "GET"
         })
-        .then(function(data)
-        {
-            console.log(data);
+        .then(function (data) {
+            //console.log(data);
             for (let i = 0; i < data.length; i++)
             {
                 let userName = data[i].username;
@@ -301,10 +311,10 @@ $(document).ready(function ()
                             let index = surveyUserArr.indexOf(userName);
 
                             //Should always be found but check just to be safe.
-                            if(index >= 0)
+                            if (index >= 0)
                             {
                                 surveyUserArr.splice(index, 1);
-                                console.log(surveyUserArr);
+                                //console.log(surveyUserArr);
                                 userNameFinalDiv.remove();
                             }
                         });
@@ -314,8 +324,7 @@ $(document).ready(function ()
         });
     }
 
-    //***************************************** New Stuff *****************************************
-
+    
     //Refersh the users list.
     $("#refresh-users").on("click", function (event)
     {
@@ -323,12 +332,175 @@ $(document).ready(function ()
         pullUsers();
     });
 
-    //*********************************************************************************************
+   
+    function addQuestion()
+    {
+        $("#addQ").on("click", function (event)
+        {
+            let questionName = $("#surveyQuestion").val().trim();
+
+            let checkQName = surveyQuestionsArr.filter(function(checkName)
+            {
+                return checkName.questionName1 === questionName;
+            })
+
+            //console.log(checkQName);
+
+            if (checkQName.length > 0)
+            {
+                return;
+            }
+
+            if(questionName !== "" && questionOptionsArr.length > 0)
+            {
+                let deleteQIcon = "Delete";
+                let deleteQBtn = $("<button>");
+                deleteQBtn.addClass("deleteQBtn");
+                deleteQBtn.attr("type", "button");
+                deleteQBtn.attr("data-username", questionName);
+                deleteQBtn.append(deleteQIcon);
+
+                let questionDiv = $("<div>");
+                questionDiv.addClass("question-block");
+
+                let ul = $("<ul>");
+                let questionNameText = $("<div>");
+                questionNameText.addClass("question-text");
+                questionNameText.text(questionName);
+                questionDiv.append(questionNameText);
+                questionDiv.append(ul);
+
+                for (let i = 0; i < questionOptionsArr.length; i++)
+                {
+                    let questionChoice = questionOptionsArr[i].surveyOption;
+                    let choicesBlock = $("<div>");
+
+                    choicesBlock.addClass("options-block");
+                    questionDiv.append("<li>" + questionChoice + "</li>");
+                }
+
+                questionDiv.append(deleteQBtn);
+                $("#surveyQuestionsDiv").append(questionDiv);
+
+                deleteQBtn.on("click", function (event)
+                {
+                    for (let i = 0; i < surveyQuestionsArr.length; i++)
+                    {
+                        if (surveyQuestionsArr[i].questionName1 === questionName)
+                        {
+                            surveyQuestionsArr.splice(i, 1);
+                            questionDiv.remove();
+                        }
+                    }
+
+                    console.log(surveyQuestionsArr);
+                });
+
+                let surveyQuestion =
+                {
+                    questionName1: questionName,
+                    questionOptions: questionOptionsArr
+                }
+
+                surveyQuestionsArr.push(surveyQuestion);
+                console.log(surveyQuestionsArr);
+
+                $("#surveyQuestion").val("");
+                $("#questionOptions").empty();
+                questionOptionsArr = [];
+            }
+            else
+            {
+                console.log("Fields cannot be blank")
+                return;
+            }
+        });
+    }
+
+    function clearQuestion()
+    {
+        $("#clearQ").on("click", function (event)
+        {
+            $("#surveyQuestion").val("");
+            $("#questionOptions").empty();
+            questionOptionsArr = [];
+        });
+    }
+
+    function addCustomQuestion()
+    {
+        $("#customQBtn").on("click", function (event)
+        {
+            let customChoice = $("#customQ").val().trim();
+
+            if (customChoice !== "")
+            {
+                //console.log(customChoice);
+                $("#customQ").val("");
+
+                if (!questionOptionsArr.includes(customChoice))
+                {
+                    questionOptionsArr.push(
+                    {
+                        surveyOption: customChoice,
+                        latLong: null,
+                        address: null,
+                        isGoogle: false
+                    });
+                    //console.log(questionOptionsArr);
+
+                    let deleteOptionIcon = "<span>&times</span>";
+                    let deleteOptionBtn = $("<button>");
+                    deleteOptionBtn.addClass("deleteUserBtns");
+                    deleteOptionBtn.attr("type", "button");
+                    deleteOptionBtn.attr("data-username", customChoice);
+
+                    let questionBox = $("<label>");
+                    questionBox.addClass("form-check-label mx-3");
+                    questionBox.append(customChoice);
+
+                    let questionDiv = $("<div>");
+                    questionDiv.addClass("form-check");
+
+                    deleteOptionBtn.append(deleteOptionIcon);
+                    questionDiv.append(deleteOptionBtn);
+                    questionDiv.append(questionBox);
+                    $("#questionOptions").append(questionDiv);
+
+                    deleteOptionBtn.on("click", function (event)
+                    {
+                        //let surveyOption2 = ($(this).attr("data-username"));
+                        //console.log(deleteUserNameBtn);
+
+                        //Returns the index of the user name in the array.
+                        //Returns -1 if not found. 
+                        let index = questionOptionsArr.indexOf(customChoice);
+
+                        //Should always be found but check just to be safe.
+                        if (index >= 0)
+                        {
+                            questionOptionsArr.splice(index, 1);
+                            //console.log(questionOptionsArr);
+                            questionDiv.remove();
+                        }
+                    });
+                }
+
+            }
+            else
+            {
+                console.log("Field cannot be blank");
+                return;
+            }
+        })
+    }
 
     function googlePlacesSearch()
     {
         $("#gPlacesSearch").on("click", function (event)
         {
+            $("#gPlacesResults").empty();
+
             let googleLocation = $("#gPlacesLocation").val().trim();
             let googleState = $("#gPlacesState").val().trim();
 
@@ -341,7 +513,7 @@ $(document).ready(function ()
 
             if (googleLocation !== "" && googleState !== "" && radiusInt !== "")
             {
-                if(isNaN(radiusInt))
+                if (isNaN(radiusInt))
                 {
                     console.log("radius must be an integer");
                     return;
@@ -350,87 +522,98 @@ $(document).ready(function ()
                 $.ajax("/api/places/" + query + "/" + radius,
                 {
                     type: "GET"
-                }).then(function(data)
+                }).then(function (data)
                 {
-                //console.log(data);
+                    //console.log(data);
 
-                for (let i = 0; i < data.length; i++)
-                {
-                    let address = data[i].formatted_address;
-                    let latLong = data[i].geometry.location;
-                    let name = data[i].name;
-                    //console.log(address);
-                    //console.log(latLong);
-                    //console.log(name);
-
-                    let placesBtnIcon = "+";
-                    let placesBtn = $("<button>");
-                    placesBtn.addClass("addPlacesButton");
-                    placesBtn.attr("type", "button");
-                    placesBtn.attr("data-username", name);
-
-                    let placesBox = $("<label>");
-                    placesBox.addClass("form-check-label mx-3");
-                    placesBox.append(name);
-
-                    let placesResult = $("<div>");
-                    placesResult.addClass("form-check");
-
-                    placesBtn.append(placesBtnIcon);
-                    placesResult.append(placesBtn);
-                    placesResult.append(placesBox);
-
-                    $("#gPlacesResults").append(placesResult);
-
-                    placesBtn.on("click", function (event)
+                    for (let i = 0; i < data.length; i++)
                     {
-                        let surveyOption = ($(this).attr("data-username"));
-                        //console.log(surveyOption);
+                        let address = data[i].formatted_address;
+                        let latLong = data[i].geometry.location;
+                        let name = data[i].name;
+                        //console.log(address);
+                        //console.log(latLong);
+                        //console.log(name);
 
-                        if (!questionOptionsArr.includes(surveyOption))
+                        let placesBtnIcon = "+";
+                        let placesBtn = $("<button>");
+                        placesBtn.addClass("addPlacesButton");
+                        placesBtn.attr("type", "button");
+                        placesBtn.attr("data-username", name);
+
+                        let placesBox = $("<label>");
+                        placesBox.addClass("form-check-label mx-3");
+                        placesBox.append(name);
+
+                        let placesResult = $("<div>");
+                        placesResult.addClass("form-check");
+
+                        placesBtn.append(placesBtnIcon);
+                        placesResult.append(placesBtn);
+                        placesResult.append(placesBox);
+
+                        $("#gPlacesResults").append(placesResult);
+
+                        placesBtn.on("click", function (event)
                         {
-                            questionOptionsArr.push(surveyOption);
-                            console.log(questionOptionsArr);
+                            let surveyOption = ($(this).attr("data-username"));
+                            //console.log(surveyOption);
 
-                            let deleteOptionIcon = "<span>&times</span>";
-                            let deleteOptionBtn = $("<button>");
-                            deleteOptionBtn.addClass("deleteUserBtns");
-                            deleteOptionBtn.attr("type", "button");
-                            deleteOptionBtn.attr("data-username", surveyOption);
-
-                            let questionBox = $("<label>");
-                            questionBox.addClass("form-check-label mx-3");
-                            questionBox.append(surveyOption);
-
-                            let questionDiv = $("<div>");
-                            questionDiv.addClass("form-check");
-
-                            deleteOptionBtn.append(deleteOptionIcon);
-                            questionDiv.append(deleteOptionBtn);
-                            questionDiv.append(questionBox);
-                            $("#questionOptions").append(questionDiv);
-
-                            deleteOptionBtn.on("click", function (event)
+                            if (!questionOptionsArr.includes(surveyOption))
                             {
-                                let surveyOption2 = ($(this).attr("data-username"));
-                                //console.log(deleteUserNameBtn);
-    
-                                if (questionOptionsArr.includes(surveyOption2))
+                                questionOptionsArr.push(
                                 {
-                                    questionOptionsArr.splice(surveyOption2, 1);
-                                    console.log(questionOptionsArr);
-                                    questionDiv.empty();
-                                }
-                            });
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    });
-                }
+                                    surveyOption: surveyOption,
+                                    latLong: latLong,
+                                    address: address,
+                                    isGoogle: true
+                                });
+                                //console.log(questionOptionsArr);
+
+                                let deleteOptionIcon = "<span>&times</span>";
+                                let deleteOptionBtn = $("<button>");
+                                deleteOptionBtn.addClass("deleteUserBtns");
+                                deleteOptionBtn.attr("type", "button");
+                                deleteOptionBtn.attr("data-username", surveyOption);
+
+                                let questionBox = $("<label>");
+                                questionBox.addClass("form-check-label mx-3");
+                                questionBox.append(surveyOption);
+
+                                let questionDiv = $("<div>");
+                                questionDiv.addClass("form-check");
+
+                                deleteOptionBtn.append(deleteOptionIcon);
+                                questionDiv.append(deleteOptionBtn);
+                                questionDiv.append(questionBox);
+                                $("#questionOptions").append(questionDiv);
+
+                                deleteOptionBtn.on("click", function (event)
+                                {
+                                    //let surveyOption2 = ($(this).attr("data-username"));
+                                    //console.log(deleteUserNameBtn);
+
+                                    //Returns the index of the user name in the array.
+                                    //Returns -1 if not found. 
+                                    let index = questionOptionsArr.indexOf(surveyOption);
+
+                                    //Should always be found but check just to be safe.
+                                    if (index >= 0)
+                                    {
+                                        questionOptionsArr.splice(index, 1);
+                                        //console.log(questionOptionsArr);
+                                        questionDiv.remove();
+                                    }
+                                });
+                            }
+                        });
+                    }
 
                 });
+
+                $("#gPlacesLocation").val("");
+                $("#gPlacesState").val("");
+                $("#gPlacesRadius").val("");
             }
             else
             {
@@ -438,6 +621,5 @@ $(document).ready(function ()
                 return;
             }
         });
-        
     }
 });
