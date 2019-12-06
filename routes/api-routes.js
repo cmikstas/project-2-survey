@@ -1,6 +1,7 @@
 //Requiring our models and passport as we've configured it
 var db = require("../models");
 var passport = require("../config/passport");
+let bcrypt = require("bcryptjs");
 
 //Requiring our custom middleware for checking if a user is logged in
 var isAuthenticated = require("../config/middleware/isAuthenticated");
@@ -462,6 +463,107 @@ module.exports = function(app)
         .then(function(dbDistro)
         {
             res.json(dbDistro);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Get a user's email notification setting.
+    app.get("/api/getnotification/:username", isAuthenticated, function(req, res)
+    {
+        db.User.findOne(
+        {
+            where:
+            {
+                username: req.params.username
+            },
+            attributes: ["username", "allowNotifications"]
+        })
+        .then(function(data)
+        {
+            res.json(data);
+        });
+    });
+
+    //Change a user's email notification setting.
+    app.put("/api/putnotification/:username/:true?", isAuthenticated, function(req, res)
+    {
+        let param = req.params.true;
+        let isTrue;
+
+        if(param == "true")
+        {
+            isTrue = true;
+        }
+        else
+        {
+            isTrue = false;
+        }
+
+        db.User.update(
+        {
+            allowNotifications: isTrue
+        },
+        {
+            where:
+            {
+                username: req.params.username
+            }
+        })
+        .then(function(dbUser)
+        {
+            res.json(dbUser);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Change a user's password.
+    app.put("/api/putpassword/:username/:password", isAuthenticated, function(req, res)
+    {
+        let password = req.params.password;
+        password = bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+
+        db.User.update(
+        {
+            password: password
+        },
+        {
+            where:
+            {
+                username: req.params.username
+            }
+        })
+        .then(function(dbUser)
+        {
+            res.json(dbUser);
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
+
+    //Change a user's email.
+    app.put("/api/putemail/:username/:email", isAuthenticated, function(req, res)
+    {
+        db.User.update(
+        {
+            email: req.params.email
+        },
+        {
+            where:
+            {
+                username: req.params.username
+            }
+        })
+        .then(function(dbUser)
+        {
+            res.json(dbUser);
         })
         .catch(function(error)
         {
