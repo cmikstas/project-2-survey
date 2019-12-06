@@ -17,6 +17,11 @@
     overflow: auto;
 }
 
+button.addUserBtns:hover
+{
+    background-color: rgb(1, 181, 241);
+}
+
 .addUserBtns
 {
     /**height: 20px;**/
@@ -30,10 +35,15 @@
     font-size: 25px;
     margin-top: 2px;
     cursor: pointer;
- }
+}
 
- .deleteQBtn
- {
+button.deleteQBtn:hover
+{
+    background-color: #c00202;
+}
+
+.deleteQBtn
+{
     /**height: 20px;**/
     background-color: #f44336;
     border: none;
@@ -47,10 +57,15 @@
     margin-top: 5px;
     padding: 7px 12px 7px 12px;
     cursor: pointer; 
- }
+}
 
- .deleteUserBtns
- {
+button.deleteUserBtns:hover
+{
+    background-color: #c00202;
+}
+
+.deleteUserBtns
+{
     /**height: 20px;**/
     background-color: #f44336;
     border: none;
@@ -62,10 +77,15 @@
     font-size: 25px;
     margin-top: 2px;
     cursor: pointer;
- }
+}
 
- .addPlacesButton
- {
+button.addPlacesButton:hover
+{
+    background-color: rgb(1, 181, 241);
+}
+
+.addPlacesButton
+{
     /**height: 20px;**/
     background-color: #008CBA;
     border: none;
@@ -77,9 +97,9 @@
     font-size: 25px;
     margin-top: 2px;
     cursor: pointer;
- }
+}
 
- .question-text
+.question-text
 {
     font-size: 1.5rem;
     font-weight: bold;
