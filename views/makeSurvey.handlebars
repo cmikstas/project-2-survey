@@ -81,12 +81,11 @@
                     <input type="text" class="form-control" id="surveyName" placeholder="Enter title...">
                 </div>
 
-                <!--Date Time Picker-->
-
+                <!--Date Time Pickers-->
                 <div class="form-group">
                     <label class="survey-info" for="startTime">Start Time</label>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control" />
+                    <div class='input-group date' id='start-time'>
+                        <input type='text' id="start-time-text" class="form-control" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -95,8 +94,8 @@
 
                 <div class="form-group">
                     <label class="survey-info" for="startTime">End Time</label>
-                    <div class='input-group date' id='datetimepicker4'>
-                        <input type='text' class="form-control" />
+                    <div class='input-group date' id='end-time'>
+                        <input type='text' id="end-time-text"" class="form-control" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -105,7 +104,7 @@
 
                 <div class="info-message"></div>
 
-                <button type="button" class="btn btn-primary mt-2 mb-3">Create Survey</button>
+                <button type="button" id="create-survey" class="btn btn-primary mt-2 mb-3">Create Survey</button>
             </form>
 
             <div class="border-bottom pt-2">
@@ -221,7 +220,7 @@
 <script type="text/javascript">
     $(function ()
     { 
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker4').datetimepicker();
+        $('#start-time').datetimepicker();
+        $('#end-time').datetimepicker();
     });
 </script>

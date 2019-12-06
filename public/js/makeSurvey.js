@@ -20,6 +20,123 @@ $(document).ready(function ()
     clearQuestion();
     addQuestion();
 
+    /*
+    $("#surveyName").addClass("not-valid");
+    $("#start-time-text").addClass("not-valid");
+    $("#end-time-text").addClass("not-valid");
+    $("#surveyQuestionsDiv").addClass("not-valid");
+    $("#usersAdded").addClass("not-valid");
+    $("#surveyQuestion").addClass("not-valid");
+    $("#questionOptions").addClass("not-valid");
+    $("#gPlacesLocation").addClass("not-valid");
+    $("#gPlacesState").addClass("not-valid");
+    $("#gPlacesRadius").addClass("not-valid");
+    $("#customQ").addClass("not-valid");
+    $("#distro-text").addClass("not-valid");
+    $("#comment-text").addClass("not-valid");
+    */
+    
+    //Show error message if something is wrong with the survey.
+    let showErrorBox = function(errMessage)
+    {
+        $(".info-message").empty();
+        $(".info-message").append
+        (
+            "<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">" +
+            errMessage +
+            "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
+            "<span aria-hidden=\"true\">&times;</span></button></div>"
+        );
+    }
+
+    //This is the button that packs up the survey info and sends it to the server.
+    $("#create-survey").on("click", function(event)
+    {
+        //Remove any existing error messages and indicators.
+        $(".info-message").empty();
+        $("#surveyName").removeClass("not-valid");
+        $("#start-time-text").removeClass("not-valid");
+        $("#end-time-text").removeClass("not-valid");
+        $("#surveyQuestionsDiv").removeClass("not-valid");
+        $("#usersAdded").removeClass("not-valid");
+        $("#surveyQuestion").removeClass("not-valid");
+        $("#questionOptions").removeClass("not-valid");
+        $("#gPlacesLocation").removeClass("not-valid");
+        $("#gPlacesState").removeClass("not-valid");
+        $("#gPlacesRadius").removeClass("not-valid");
+        $("#customQ").removeClass("not-valid");
+        $("#distro-text").removeClass("not-valid");
+        $("#comment-text").removeClass("not-valid");
+
+        //Survey name must not be blank.
+        let surveyName = $("#surveyName").val().trim();
+        if(surveyName === "")
+        {
+            showErrorBox("Survey must have a name");
+            $("#surveyName").addClass("not-valid");
+            return;
+        }
+
+        let startTime = $("#start-time-text").val().trim();
+        let endTime   = $("#end-time-text").val().trim();
+
+        let startMoment = moment(startTime, "MM/DD/YYYY hh:mm A");
+        let endMoment = moment(endTime, "MM/DD/YYYY hh:mm A");
+
+        //Error check the start and end times.
+        if(!startMoment.isValid())
+        {
+            showErrorBox("Invalid start time/date");
+            $("#start-time-text").addClass("not-valid");
+            return;
+        }
+
+        if(!endMoment.isValid())
+        {
+            showErrorBox("Invalid end time/date");
+            $("#end-time-text").addClass("not-valid");
+            return;
+        }
+
+        if(moment(startMoment).isAfter(endMoment))
+        {
+            showErrorBox("Start time not before end time");
+            $("#start-time-text").addClass("not-valid");
+            return;
+        }
+
+        if(moment(startMoment).isSame(endMoment))
+        {
+            showErrorBox("Start time not before end time");
+            $("#start-time-text").addClass("not-valid");
+            return;
+        }
+
+        if(moment().isAfter(endMoment))
+        {
+            showErrorBox("End time before current time");
+            $("#end-time-text").addClass("not-valid");
+            return;
+        }
+
+        //Convert the moments into the properly formatted strings.
+        let startString = moment(startMoment).format("YYYY-MM-DD hh:mm:ss").toString();
+        let endString = moment(endMoment).format("YYYY-MM-DD hh:mm:ss").toString();
+
+        if(debug)console.log("Survey start time: " + startString);
+        if(debug)console.log("Survey end time:   " + endString);
+
+
+
+
+
+
+        
+
+
+
+    });
+
     let showDistros = function()
     {
         //Get the logged in username.
