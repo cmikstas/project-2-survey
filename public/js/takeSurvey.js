@@ -2,6 +2,7 @@ let debug = true; //Print extra stuff when debugging.
 let username;     //Logged in user.
 let id;           //Survey ID number.
 let surveyData;   //Initial survey data.
+let userSurveys = [];
 
 //The number of table rows during the last poll.
 let lastComments  = 0;

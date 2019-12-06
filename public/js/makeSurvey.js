@@ -1,16 +1,15 @@
 let debug = true;
-var map;
 
 var userCommentsArr    = [];
 var surveyUserArr      = [];
-var selectionArray     = [];
-var markers            = [];
 
 var questionOptionsArr = [];
 var surveyQuestionsArr = [];
 var totalQuestionsArr  = [];
 
+var map;
 var mapSelectionArray  = [];
+var markers            = [];
 
 $(document).ready(function ()
 {
@@ -95,7 +94,7 @@ $(document).ready(function ()
                             deleteUserBtn.addClass("deleteUserBtns");
                             deleteUserBtn.attr("type", "button");
 
-                            let userBoxFinal = $("<label>");
+                            let userBoxFinal = $("<span>");
                             userBoxFinal.addClass("form-check-label mx-3");
                             userBoxFinal.append(userName);
 
@@ -208,10 +207,12 @@ $(document).ready(function ()
     $("#comment-btn").on("click", function (event)
     {
         event.preventDefault();
+        $("#comment-text").removeClass("not-valid");
 
         //Exit if user comment is blank.
         if($("#comment-text").val().trim() === "")
         {
+            $("#comment-text").addClass("not-valid");
             return;
         }
 
@@ -267,7 +268,7 @@ $(document).ready(function ()
                 addUserBtn.attr("type", "button");
                 //addUserBtn.attr("data-username", userName);
 
-                let userBox = $("<label>");
+                let userBox = $("<span>");
                 userBox.addClass("form-check-label mx-3");
                 userBox.append(userName);
 
@@ -292,7 +293,7 @@ $(document).ready(function ()
                         deleteUserBtn.addClass("deleteUserBtns");
                         deleteUserBtn.attr("type", "button");
 
-                        let userBoxFinal = $("<label>");
+                        let userBoxFinal = $("<span>");
                         userBoxFinal.addClass("form-check-label mx-3");
                         userBoxFinal.append(userName);
 
@@ -337,14 +338,15 @@ $(document).ready(function ()
     {
         $("#addQ").on("click", function (event)
         {
+            $("#surveyQuestion").removeClass("not-valid");
+            $("#questionOptions").removeClass("not-valid");
+
             let questionName = $("#surveyQuestion").val().trim();
 
             let checkQName = surveyQuestionsArr.filter(function(checkName)
             {
                 return checkName.questionName1 === questionName;
             })
-
-            //console.log(checkQName);
 
             if (checkQName.length > 0)
             {
@@ -379,6 +381,25 @@ $(document).ready(function ()
                     questionDiv.append("<li>" + questionChoice + "</li>");
                 }
 
+                for (let i = 0; i < questionOptionsArr.length; i++)
+                {
+                    let surveyOption = questionOptionsArr[i].surveyOption;
+                    //console.log(surveyOption);
+                    let latLong = questionOptionsArr[i].latLong;
+                    let lat = latLong.lat;
+                    let lng = latLong.lng;
+
+                    let mapSelectionObject = 
+                    {
+                        surveyOption: surveyOption,
+                        lat: lat,
+                        lng: lng
+                    }
+
+                    mapSelectionArray.push(mapSelectionObject);
+                    addMarker(mapSelectionObject);
+                }
+
                 questionDiv.append(deleteQBtn);
                 $("#surveyQuestionsDiv").append(questionDiv);
 
@@ -388,12 +409,25 @@ $(document).ready(function ()
                     {
                         if (surveyQuestionsArr[i].questionName1 === questionName)
                         {
+                            let optionsArr = surveyQuestionsArr[i].questionOptions;
+
+                            for (let j = 0; j < optionsArr.length; j++)
+                            {
+                                let removeMarkerObject = 
+                                {
+                                    name: optionsArr[j].surveyOption,
+                                    position: optionsArr[j].latLong
+                                }
+                                removeMarker(removeMarkerObject);
+                            }
                             surveyQuestionsArr.splice(i, 1);
                             questionDiv.remove();
                         }
+
+                        
                     }
 
-                    console.log(surveyQuestionsArr);
+                    //console.log(surveyQuestionsArr);
                 });
 
                 let surveyQuestion =
@@ -403,7 +437,7 @@ $(document).ready(function ()
                 }
 
                 surveyQuestionsArr.push(surveyQuestion);
-                console.log(surveyQuestionsArr);
+                //console.log(surveyQuestionsArr);
 
                 $("#surveyQuestion").val("");
                 $("#questionOptions").empty();
@@ -411,6 +445,16 @@ $(document).ready(function ()
             }
             else
             {
+                if ($("#surveyQuestion").val() === "")
+                {
+                    $("#surveyQuestion").addClass("not-valid");
+                }
+
+                if (questionOptionsArr.length <= 0)
+                {
+                    $("#questionOptions").addClass("not-valid");
+                }
+
                 console.log("Fields cannot be blank")
                 return;
             }
@@ -421,6 +465,8 @@ $(document).ready(function ()
     {
         $("#clearQ").on("click", function (event)
         {
+            $("#surveyQuestion").removeClass("not-valid");
+            $("#questionOptions").removeClass("not-valid");
             $("#surveyQuestion").val("");
             $("#questionOptions").empty();
             questionOptionsArr = [];
@@ -431,6 +477,7 @@ $(document).ready(function ()
     {
         $("#customQBtn").on("click", function (event)
         {
+            $("#customQ").removeClass("not-valid");
             let customChoice = $("#customQ").val().trim();
 
             if (customChoice !== "")
@@ -455,7 +502,7 @@ $(document).ready(function ()
                     deleteOptionBtn.attr("type", "button");
                     deleteOptionBtn.attr("data-username", customChoice);
 
-                    let questionBox = $("<label>");
+                    let questionBox = $("<span>");
                     questionBox.addClass("form-check-label mx-3");
                     questionBox.append(customChoice);
 
@@ -489,6 +536,7 @@ $(document).ready(function ()
             }
             else
             {
+                $("#customQ").addClass("not-valid");
                 console.log("Field cannot be blank");
                 return;
             }
@@ -499,11 +547,14 @@ $(document).ready(function ()
     {
         $("#gPlacesSearch").on("click", function (event)
         {
+            $("#gPlacesLocation").removeClass("not-valid");
+            $("#gPlacesState").removeClass("not-valid");
+            $("#gPlacesRadius").removeClass("not-valid");
+
             $("#gPlacesResults").empty();
 
             let googleLocation = $("#gPlacesLocation").val().trim();
             let googleState = $("#gPlacesState").val().trim();
-
             let query = googleLocation + ", " + googleState;
             //console.log(query);
 
@@ -515,6 +566,7 @@ $(document).ready(function ()
             {
                 if (isNaN(radiusInt))
                 {
+                    $("#gPlacesRadius").addClass("not-valid");
                     console.log("radius must be an integer");
                     return;
                 }
@@ -540,8 +592,9 @@ $(document).ready(function ()
                         placesBtn.addClass("addPlacesButton");
                         placesBtn.attr("type", "button");
                         placesBtn.attr("data-username", name);
+                        placesBtn.attr("data-address", address)
 
-                        let placesBox = $("<label>");
+                        let placesBox = $("<span>");
                         placesBox.addClass("form-check-label mx-3");
                         placesBox.append(name);
 
@@ -558,6 +611,7 @@ $(document).ready(function ()
                         {
                             let surveyOption = ($(this).attr("data-username"));
                             //console.log(surveyOption);
+                            let surveyAddress = ($(this).attr("data-address"))
 
                             if (!questionOptionsArr.includes(surveyOption))
                             {
@@ -576,7 +630,7 @@ $(document).ready(function ()
                                 deleteOptionBtn.attr("type", "button");
                                 deleteOptionBtn.attr("data-username", surveyOption);
 
-                                let questionBox = $("<label>");
+                                let questionBox = $("<span>");
                                 questionBox.addClass("form-check-label mx-3");
                                 questionBox.append(surveyOption);
 
@@ -617,9 +671,82 @@ $(document).ready(function ()
             }
             else
             {
+                if (isNaN(radiusInt))
+                {
+                    $("#gPlacesRadius").addClass("not-valid");
+                }
+
+                if ($("#gPlacesLocation").val() === "")
+                {
+                    $("#gPlacesLocation").addClass("not-valid");
+                }
+
+                if ($("#gPlacesState").val() === "")
+                {
+                    $("#gPlacesState").addClass("not-valid");
+                }
+
                 console.log("Please make valid selections");
                 return;
             }
         });
+    }
+
+    // function to add a marker to google map
+    function addMarker(mapSelectionObject)
+    {
+        // creates a marker and adds it to google maps
+        let thisMarker = new google.maps.Marker
+            ({
+                position: { lat: mapSelectionObject.lat, lng: mapSelectionObject.lng },
+                map: map,
+                name: mapSelectionObject.surveyOption,
+            });
+        //adds info window to click.
+
+        /** 
+        let contentString = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h1 id="firstHeading" class="firstHeading">' + selectionObject.name + '</h1>' +
+            '<div id="bodyContent">' +
+            '<ul>'
+            '<li>Rating: ' + selectionObject.rating + '</li>'
+            '<li>Total Reviews: ' + selectionObject.reviewCount + '</li>'
+            '<li>City: ' + selectionObject.city + '</li>';
+          
+        
+        let infowindow = new google.maps.InfoWindow(
+            {
+                content: contentString
+            });
+         
+    
+        thisMarker.addListener('click', function ()
+        {
+            infowindow.open(map, thisMarker);
+        });
+        */ 
+    
+        // adds a new marker to the markers array
+        markers.push(thisMarker);
+    }
+
+    function removeMarker(mapSelectionObject)
+    {
+        for (let i = 0; i < markers.length; i++)
+        {
+            if
+            (
+                markers[i].name === mapSelectionObject.name &&
+                markers[i].position.lat().toFixed(5) === mapSelectionObject.position.lat.toFixed(5) &&
+                markers[i].position.lng().toFixed(5) === mapSelectionObject.position.lng.toFixed(5)
+            )
+            {
+                // removes the marker from the map and the marker array.
+                markers[i].setMap(null);
+                markers.splice(i, 1);
+            }
+        }
     }
 });
