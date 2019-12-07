@@ -24,11 +24,9 @@ button.addUserBtns:hover
 
 .addUserBtns
 {
-    /**height: 20px;**/
     background-color: #008CBA;
     border: none;
     color: white;
-    /**padding: 5px 5px;**/
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -44,12 +42,10 @@ button.deleteQBtn:hover
 
 .deleteQBtn
 {
-    /**height: 20px;**/
     background-color: #f44336;
     border: none;
     border-radius: 5px;
     color: white;
-    /**padding: 5px 5px;**/
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -66,11 +62,9 @@ button.deleteUserBtns:hover
 
 .deleteUserBtns
 {
-    /**height: 20px;**/
     background-color: #f44336;
     border: none;
     color: white;
-    /**padding: 5px 5px;**/
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -86,11 +80,9 @@ button.addPlacesButton:hover
 
 .addPlacesButton
 {
-    /**height: 20px;**/
     background-color: #008CBA;
     border: none;
     color: white;
-    /**padding: 5px 5px;**/
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -109,10 +101,25 @@ button.addPlacesButton:hover
 
 .question-block
 {
-    /**border-bottom: 3px solid rgb(24, 100, 28);**/
-    margin: .5rem 0;
+    border: 3px solid rgba(30, 47, 126, 1);
+    border-radius: 5px;
+    margin: .5rem .5rem;
     padding: .5rem;
     text-align: left;
+}
+
+.result-block
+{
+    border: 3px solid rgba(30, 47, 126, 1);
+    border-radius: 5px;
+    margin: .25rem .25rem;
+    padding: .5rem;
+    text-align: left;
+}
+
+li
+{
+    margin-left: 10px;
 }
 
 /******************************************** Navbar *********************************************/
@@ -171,3 +178,8 @@ button.addPlacesButton:hover
     box-shadow: 0 0 0 .2rem #ff0000;
 }
 
+.alert-dismissible .close
+{
+    position: relative;
+    top: -10px;
+}

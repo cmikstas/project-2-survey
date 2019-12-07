@@ -11,13 +11,15 @@ module.exports = function(sequelize, DataTypes)
 
         startTime:
         {
-            type: DataTypes.DATE,
+            //type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false
         },
 
         stopTime:
         {
-            type: DataTypes.DATE,
+            //type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false
         }
     });

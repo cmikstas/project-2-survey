@@ -9,11 +9,14 @@
 <nav class="navbar navbar-default bg-secondary">
     <div class="container">
         <div class="navbar-header">
-            <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! Unread Surveys:</div><div id="unread-div">0</div>
-            <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')" href="/logout">
+            <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! Unread Surveys:</div>
+            <div id="unread-div">0</div>
+            <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')"
+                href="/logout">
                 Logout
             </a>
-            <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')" href="/home">
+            <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')"
+                href="/home">
                 Home
             </a>
         </div>
@@ -25,168 +28,173 @@
 </div>
 
 <div id="page-body" style="text-align: left;">
-<div class="container-fluid border-top rounded mb-2">
-    <div class="row">
+    <div class="container-fluid border-top rounded mb-2">
+        <div class="row">
 
-        <!--NEW SURVEY QUESTION COLUMN-->
-        <div class="col-md-4 border-right">
+            <!--NEW SURVEY QUESTION COLUMN-->
+            <div class="col-md-4 border-right">
+                <form class="border-bottom mt-2">
+                    <div class="form-group">
+                        <label class="survey-info" for="surveyQuestion">Question Creator</label>
+                        <input type="text" class="form-control" id="surveyQuestion"
+                            placeholder="Enter new question name...">
+                        <label class="survey-info mt-2">Question Choices</label>
+                        <div id="questionOptions" class="border rounded bg-light" style="height: 250px;">
 
-            <form class="border-bottom mt-2">
-                <div class="form-group">
-                    <label class="survey-info" for="surveyQuestion">Question Creator</label>
-                    <input type="text" class="form-control" id="surveyQuestion"
-                        placeholder="Enter new question name...">
-                    <label class="survey-info mt-2">Question Choices</label>
-                    <div id="questionOptions" class="border rounded bg-light" style="height: 250px;">
-
+                        </div>
+                        <button type="submit" id="addQ" class="btn btn-success mt-2">Add Question</button>
+                        <button type="button" id="clearQ" class="btn btn-danger mt-2">Clear Question</button>
                     </div>
-                    <button type="button" id="addQ" class="btn btn-success mt-2">Add Question</button>
-                    <button type="button" id="clearQ" class="btn btn-danger mt-2">Clear Question</button>
-                </div>
-            </form>
+                </form>
+                <form class="mt-2 border-bottom">
+                    <div class="form-group">
+                        <div>
+                            <label class="survey-info" for="gPlaces">Search Google Places</label>
+                            <input type="text" class="form-control mt-2" id="gPlacesLocation"
+                                placeholder="Enter item to search">
+                            <input type="text" class="form-control mt-2" id="gPlacesState"
+                                placeholder="Enter city or state">
+                            <input type="text" class="form-control mt-2" id="gPlacesRadius"
+                                placeholder="Enter radius (In meters)">
+                            <button type="submit" class="btn btn-primary mt-2" id="gPlacesSearch">Search</button>
+                        </div>
+                        <div class="mt-2">
+                            <p class="survey-info">
+                                Search Results
+                            </p>
+                            <div id="gPlacesResults" class="border rounded bg-light" style="height: 250px;"></div>
+                            <button type="button" id="clear-results" class="btn btn-danger mt-2">Clear Results</button>
+                        </div>
+                    </div>
+                </form>
+                <form>
+                    <div class="form-group mt-2">
+                        <label class="survey-info" for="customQ">Add Custom Choice</label>
+                        <input type="text" class="form-control" id="customQ" placeholder="Choice text...">
+                        <button type="submit" id="customQBtn" class="btn btn-success mt-2 mb-2">Add Choice</button>
+                    </div>
+                </form>
+            </div>
 
-            <form class="mt-2">
-                <div class="form-group">
-                    <div>
-                        <label class="survey-info" for="gPlaces">Search Google Places</label>
-                        <input type="text" class="form-control mt-2" id="gPlacesLocation" placeholder="Enter item to search">
-                        <input type="text" class="form-control mt-2" id="gPlacesState" placeholder="Enter city or state">
-                        <input type="text" class="form-control mt-2" id="gPlacesRadius" placeholder="Enter radius (In meters)">
-                        <button type="button" class="btn btn-primary mt-2" id="gPlacesSearch">Search</button>
+            <!--NEW SURVEY COLUMN-->
+            <div class="col-md-4">
+                <form class="border-bottom mt-2">
+                    <div class="form-group">
+                        <label class="survey-info" for="surveyName">Survey Title</label>
+                        <input type="text" class="form-control" id="surveyName" placeholder="Enter title...">
                     </div>
 
-                    <div class="border-bottom pb-3 mt-2">
-                        <p class="survey-info">
-                            Search Results
-                        </p>
-                        <div id="gPlacesResults" class="border rounded bg-light" style="height: 250px;">
+                    <!--Date Time Picker-->
 
+                    <div class="form-group">
+                        <label class="survey-info" for="startTime">Start Time</label>
+                        <div class='input-group date' id='start-time'>
+                            <input type='text' id="start-time-text" class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
                     </div>
 
-                    <div class="mt-2">
-                        <label class="survey-info" for="customQ">Add Custom Choice</label>
-                        <input type="text" class="form-control" id="customQ" placeholder="Choice text...">
-                        <button type="button" id="customQBtn" class="btn btn-success mt-2">Add Choice</button>
+                    <div class="form-group">
+                        <label class="survey-info" for="startTime">End Time</label>
+                        <div class='input-group date' id='end-time'>
+                            <input type='text' id="end-time-text" class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
 
-        <!--NEW SURVEY COLUMN-->
-        <div class="col-md-4">
-            <form class="border-bottom mt-2">
-                <div class="form-group">
-                    <label class="survey-info" for="surveyName">Survey Title</label>
-                    <input type="text" class="form-control" id="surveyName" placeholder="Enter title...">
-                </div>
+                    <div class="info-message"></div>
 
-                <!--Date Time Picker-->
+                    <button type="button" id="create-survey" class="btn btn-primary mt-2 mb-3">Create Survey</button>
+                </form>
 
-                <div class="form-group">
-                    <label class="survey-info" for="startTime">Start Time</label>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+                <div class="border-bottom pt-2">
+                    <p class="survey-info">Google Maps Results</p>
+                    <div id="map" class="border rounded bg-light mt-2 mb-3" style="height: 400px;">
+
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="survey-info" for="startTime">End Time</label>
-                    <div class='input-group date' id='datetimepicker4'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>      
-                </div>   
-
-                <div class="info-message"></div>
-
-                <button type="button" class="btn btn-primary mt-2 mb-3">Create Survey</button>
-            </form>
-
-            <div class="border-bottom pt-2">
-                <p class="survey-info">Google Maps Results</p>
-                <div id="map" class="border rounded bg-light mt-2 mb-3" style="height: 400px;"></div>
+                <div class="pt-2">
+                    <p class="survey-info">Survey Questions</p>
+                    <div id="surveyQuestionsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;"></div>
+                </div>
             </div>
 
-            <div class="pt-2">
-                <p class="survey-info">Survey Questions</p>
-                <div id="surveyQuestionsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;"></div>
+            <!--COMMENT COLUMN-->
+            <div class="col-md-4 border-left">
+
+                <!--Add User-->
+                <form class="mt-2">
+                    <div class="form-group">
+                        <div>
+                            <p class="survey-info">
+                                Add Users to Survey
+                            </p>
+                        </div>
+                        <div id="userResults" class="border rounded bg-light mt-1" style="height: 250px;">
+
+                        </div>
+                        <button type="button" class="btn btn-primary mt-2" id="refresh-users">Refresh</button>
+                    </div>
+                </form>
+
+                <form class="mt-2 border-bottom">
+                    <div class="form-group">
+                        <div>
+                            <p class="survey-info">
+                                Users Participating in this Survey
+                            </p>
+                        </div>
+                        <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 250px;"></div>
+                    </div>
+                </form>
+
+                <form>
+                    <div class="form-group mt-2">
+                        <label for="distro-text">
+                            <p class="survey-info">Create Distribution List</p>
+                        </label>
+                        <input type="text" class="form-control" id="distro-text" placeholder="List name...">
+                        <input type="submit" class="btn btn-success my-2" id="distro-btn" value="Save">
+                    </div>
+                </form>
+
+                <form class="mt-2 border-bottom">
+                    <div class="form-group">
+                        <div>
+                            <p class="survey-info">
+                                Distribution Lists
+                            </p>
+                        </div>
+
+                        <!--Distribution Lists-->
+                        <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;"></div>
+
+                    </div>
+                </form>
+
+                <div class="mt-2">
+                    <p class="survey-info">
+                        Comment History
+                    </p>
+                    <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 250px;"></div>
+                    <button type="button" id="clear-comments" class="btn btn-danger mt-2">Clear Comments</button>
+                </div>
+
+                <form>
+                    <div class="form-group mt-2">
+                        <label for="comment-text" class="survey-info">Add New Comment</label>
+                        <input type="text" class="form-control" id="comment-text" placeholder="Enter comment...">
+                        <input type="submit" class="btn btn-success my-2" id="comment-btn" value="Send">
+                    </div>
+                </form>
             </div>
-        </div>
-
-        <!--COMMENT COLUMN-->
-        <div class="col-md-4 border-left">
-
-            <!--Add User-->
-            <form class="mt-2">
-                <div class="form-group">
-                    <div>
-                        <p class="survey-info">
-                            Add Users to Survey
-                        </p>
-                    </div>
-                    <div id="userResults" class="border rounded bg-light mt-1" style="height: 250px;">
-
-                    </div>
-                    <button type="button" class="btn btn-primary mt-2" id="refresh-users">Refresh</button>
-                </div>
-            </form>
-
-            <form class="mt-2 border-bottom">
-                <div class="form-group">
-                    <div>
-                        <p class="survey-info">
-                            Users Participating in this Survey
-                        </p>
-                    </div>
-                    <div id="usersAdded" class="border rounded bg-light mt-1" style="height: 250px;"></div>
-                </div>
-            </form>
-
-            <form>
-                <div class="form-group mt-2">
-                    <label for="distro-text"><p class="survey-info">Create Distribution List</p></label>
-                    <input type="text" class="form-control" id="distro-text" placeholder="List name...">
-                    <input type="submit" class="btn btn-success my-2" id="distro-btn" value="Save">
-                </div>
-            </form>
-
-            <form class="mt-2 border-bottom">
-                <div class="form-group">
-                    <div>
-                        <p class="survey-info">
-                            Distribution Lists
-                        </p>
-                    </div>
-
-                    <!--Distribution Lists-->
-                    <div id="distroDiv" class="border rounded bg-light mt-1" style="height: 100px;"></div>
-
-                </div>
-            </form>
-
-            <div class="mt-2">
-                <p class="survey-info">
-                    Comment History
-                </p>
-                <div id="commentsDiv" class="border rounded bg-light mt-2" style="height: 250px;"></div>
-            </div>
-
-            <form>
-                <div class="form-group mt-2">
-                    <label for="comment-text" class="survey-info">Add New Comment</label>
-                    <input type="text" class="form-control" id="comment-text" placeholder="Enter comment...">
-                    <input type="submit" class="btn btn-success my-2" id="comment-btn" value="Send">
-                </div>
-            </form>
         </div>
     </div>
-</div>
 </div>
 
 <footer id="sticky-footer" class="pt-4 pb-1 mt-4">
@@ -221,7 +229,7 @@
 <script type="text/javascript">
     $(function ()
     { 
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker4').datetimepicker();
+        $('#start-time').datetimepicker();
+        $('#end-time').datetimepicker();
     });
 </script>
