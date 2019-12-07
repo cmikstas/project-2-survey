@@ -571,16 +571,180 @@ module.exports = function(app)
         });
     });
     
+    /************************** Post a new survey functions and routes ***************************/
 
+    //Add choices.
+    let addChoices = function(questionChoices, questionId, surveyId, index)
+    {
+        if(index < questionChoices.length)
+        {
+            let lat = null;
+            let lng = null;
 
+            if(typeof questionChoices[index].latLong !== 'undefined')
+            {
+                lat = questionChoices[index].latLong.lat;
+                lng = questionChoices[index].latLong.lng;
+            }
 
-    
+            db.SurveyChoice.create(
+            {
+                description:      questionChoices[index].surveyOption,
+                selectedCount:    0,
+                isGoogle:         questionChoices[index].isGoogle,
+                latitude:         lat,
+                longitude:        lng,
+                surveyId:         surveyId,
+                data0:            null,
+                data1:            null,
+                data2:            null,
+                data3:            null,
+                data4:            null,
+                data5:            null,
+                data6:            null,
+                data7:            null,
+                data8:            null,
+                data9:            null,
+                SurveyQuestionId: questionId
+            })
+            .then(function(result)
+            {
+                index++;
+                addChoices(questionChoices, questionId, surveyId, index);
+            })
+            .catch(function(error)
+            {
+                throw error;
+            });   
+        }
+        else
+        {
+            console.log("Done adding survey question options.");
+        }
+    }
 
+    //Add questions.
+    let addQuestions = function(surveyData, surveyId, index)
+    {
+        if(index < surveyData.questions.length)
+        {
+            db.SurveyQuestion.create(
+            {
+                question: surveyData.questions[index].questionName1,
+                SurveyId: surveyId
+            })
+            .then(function(result)
+            {
+                let questionId = result.dataValues.id;
+                addChoices(surveyData.questions[index++].questionOptions,
+                    questionId, surveyId, 0);
+                addQuestions(surveyData, surveyId, index);
+            })
+            .catch(function(error)
+            {
+                throw error;
+            });   
+        }
+        else
+        {
+            console.log("Done adding survey questions.");
+        }
+    }
 
+    //Add comments.
+    let addcomments = function(surveyData, surveyId, index)
+    {
+        if((typeof surveyData.comments !== 'undefined') && (index < surveyData.comments.length))
+        {
+            
+            db.SurveyComment.create(
+            {
+                username: surveyData.comments[index].userName,
+                comment:  surveyData.comments[index++].userComment,
+                SurveyId: surveyId
+            })
+            .then(function(result)
+            {
+                addcomments(surveyData, surveyId, index);
+            })
+            .catch(function(error)
+            {
+                throw error;
+            });   
+        }
+        else
+        {
+            console.log("Done adding survey comments.");
+            addQuestions(surveyData, surveyId, 0)
+        }
+    }
 
+    //Add survey takers.
+    let addSurveyTakers = function(surveyData, surveyId, index)
+    {
+        if(index < surveyData.users.length)
+        {
+            db.SurveyTaker.create(
+            {
+                username:  surveyData.users[index++],
+                isRead:    false,
+                isStarred: false,
+                SurveyId:  surveyId
+            })
+            .then(function(result)
+            {
+                addSurveyTakers(surveyData, surveyId, index);
+            })
+            .catch(function(error)
+            {
+                throw error;
+            });   
+        }
+        else
+        {
+            console.log("Done adding survey takers.");
+            addcomments(surveyData, surveyId, 0);
+        }
+    }
 
-
-
+    //add new survey route.
+    app.post("/api/newsurvey", isAuthenticated, function(req, res)
+    {
+        db.User.findOne(
+        {
+            where:
+            {
+                username: req.body.owner
+            }
+        })
+        .then(function(userData)
+        {
+            db.Survey.create(
+            {
+                surveyTitle: req.body.name,
+                startTime:   req.body.start,
+                stopTime:    req.body.end,
+                UserId:      userData.id    
+            })
+            .then(function(result)
+            {
+                let surveyId = result.dataValues.id;
+                addSurveyTakers(req.body, surveyId, 0);
+                //console.log("*******************************");
+                //console.log(result);
+                //console.log("*******************************");
+                res.json(result);
+            })
+            .catch(function(error)
+            {
+                throw error;
+            });
+        })
+        .catch(function(error)
+        {
+            throw error;
+        });
+    });
 
     /*********************************** Authentication Routes ***********************************/
     

@@ -1,15 +1,15 @@
 let debug = true;
 
-var userCommentsArr    = [];
-var surveyUserArr      = [];
+let userCommentsArr    = [];
+let surveyUserArr      = [];
 
-var questionOptionsArr = [];
-var surveyQuestionsArr = [];
-var totalQuestionsArr  = [];
+let questionOptionsArr = [];
+let surveyQuestionsArr = [];
+let totalQuestionsArr  = [];
 
-var map;
-var mapSelectionArray  = [];
-var markers            = [];
+let map;
+let mapSelectionArray  = [];
+let markers            = [];
 
 $(document).ready(function ()
 {
@@ -83,6 +83,11 @@ $(document).ready(function ()
         let startMoment = moment(startTime, "MM/DD/YYYY hh:mm A");
         let endMoment = moment(endTime, "MM/DD/YYYY hh:mm A");
 
+        //Convert the local time to UTC time.
+        let offset     = moment().utcOffset();
+        utcStartMoment = moment(startMoment).subtract(offset, "minutes");
+        utcEndMoment   = moment(endMoment).subtract(offset, "minutes");
+
         //Error check the start and end times.
         if(!startMoment.isValid())
         {
@@ -120,21 +125,57 @@ $(document).ready(function ()
         }
 
         //Convert the moments into the properly formatted strings.
-        let startString = moment(startMoment).format("YYYY-MM-DD hh:mm:ss").toString();
-        let endString = moment(endMoment).format("YYYY-MM-DD hh:mm:ss").toString();
+        let startString = moment(utcStartMoment).format("YYYY-MM-DD HH:mm:ss").toString();
+        let endString = moment(utcEndMoment).format("YYYY-MM-DD HH:mm:ss").toString();
 
-        if(debug)console.log("Survey start time: " + startString);
-        if(debug)console.log("Survey end time:   " + endString);
+        if(debug)console.log("Survey UTC start time: " + startString);
+        if(debug)console.log("Survey UTC end time:   " + endString);
+
+        //Make sure survey questions have been added.
+        if(!surveyQuestionsArr.length)
+        {
+            showErrorBox("No survey questions added");
+            $("#surveyQuestionsDiv").addClass("not-valid");
+            return;
+        }
+
+        if(!surveyUserArr.length)
+        {
+            showErrorBox("No participants added");
+            $("#usersAdded").addClass("not-valid");
+            return;
+        }
+
+        //Combine all the data and send it to the server.
+        $.ajax("/api/newsurvey",
+        {
+            type: "POST",
+            data:
+            { 
+                name:      surveyName,
+                owner:     $(".navbar-user").attr("data-username"),
+                start:     startString,
+                end:       endString,
+                questions: surveyQuestionsArr,
+                users:     surveyUserArr,
+                comments:  userCommentsArr
+            }
+        })
+        .then(function(data)
+        {
+            console.log("posted");
 
 
 
 
 
 
-        
 
 
 
+
+
+        });
     });
 
     let showDistros = function()
