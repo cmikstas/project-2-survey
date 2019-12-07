@@ -254,7 +254,8 @@ $(document).ready(function ()
         {
             type: "GET"
         })
-        .then(function (data) {
+        .then(function (data)
+        {
             //console.log(data);
             for (let i = 0; i < data.length; i++)
             {
@@ -281,7 +282,7 @@ $(document).ready(function ()
                 $("#userResults").append(userNameDiv);
 
                 addUserBtn.on("click", function (event)
-                {                    
+                {         
                     if (!surveyUserArr.includes(userName))
                     {
                         surveyUserArr.push(userName);
@@ -338,6 +339,8 @@ $(document).ready(function ()
     {
         $("#addQ").on("click", function (event)
         {
+            event.preventDefault();
+
             $("#surveyQuestion").removeClass("not-valid");
             $("#questionOptions").removeClass("not-valid");
 
@@ -353,7 +356,7 @@ $(document).ready(function ()
                 return;
             }
 
-            if(questionName !== "" && questionOptionsArr.length > 0)
+            if (questionName !== "" && questionOptionsArr.length > 0)
             {
                 let deleteQIcon = "Delete";
                 let deleteQBtn = $("<button>");
@@ -383,21 +386,24 @@ $(document).ready(function ()
 
                 for (let i = 0; i < questionOptionsArr.length; i++)
                 {
-                    let surveyOption = questionOptionsArr[i].surveyOption;
-                    //console.log(surveyOption);
-                    let latLong = questionOptionsArr[i].latLong;
-                    let lat = latLong.lat;
-                    let lng = latLong.lng;
-
-                    let mapSelectionObject = 
+                    if (questionOptionsArr[i].isGoogle)
                     {
-                        surveyOption: surveyOption,
-                        lat: lat,
-                        lng: lng
-                    }
+                        let surveyOption = questionOptionsArr[i].surveyOption;
+                        //console.log(questionOptionsArr[i]);
+                        let latLong = questionOptionsArr[i].latLong;
+                        let lat = latLong.lat;
+                        let lng = latLong.lng;
 
-                    mapSelectionArray.push(mapSelectionObject);
-                    addMarker(mapSelectionObject);
+                        let mapSelectionObject = 
+                        {
+                            surveyOption: surveyOption,
+                            lat: lat,
+                            lng: lng
+                        }
+                    
+                        //mapSelectionArray.push(mapSelectionObject);
+                        addMarker(mapSelectionObject);
+                    }
                 }
 
                 questionDiv.append(deleteQBtn);
@@ -477,6 +483,8 @@ $(document).ready(function ()
     {
         $("#customQBtn").on("click", function (event)
         {
+            event.preventDefault();
+
             $("#customQ").removeClass("not-valid");
             let customChoice = $("#customQ").val().trim();
 
@@ -494,7 +502,7 @@ $(document).ready(function ()
                         address: null,
                         isGoogle: false
                     });
-                    //console.log(questionOptionsArr);
+                    console.log(questionOptionsArr);
 
                     let deleteOptionIcon = "<span>&times</span>";
                     let deleteOptionBtn = $("<button>");
@@ -516,19 +524,19 @@ $(document).ready(function ()
 
                     deleteOptionBtn.on("click", function (event)
                     {
-                        //let surveyOption2 = ($(this).attr("data-username"));
-                        //console.log(deleteUserNameBtn);
-
                         //Returns the index of the user name in the array.
-                        //Returns -1 if not found. 
-                        let index = questionOptionsArr.indexOf(customChoice);
-
-                        //Should always be found but check just to be safe.
-                        if (index >= 0)
+                        //Returns -1 if not found.
+                        for (let j = 0; j < questionOptionsArr.length; j++)
                         {
-                            questionOptionsArr.splice(index, 1);
-                            //console.log(questionOptionsArr);
-                            questionDiv.remove();
+                            //console.log(questionOptionsArr[j]);
+
+                            //Should always be found but check just to be safe.
+                            if (questionOptionsArr[j].surveyOption === customChoice)
+                            {
+                                questionOptionsArr.splice(j, 1);
+                                //console.log(questionOptionsArr);
+                                questionDiv.remove();
+                            }
                         }
                     });
                 }
@@ -547,6 +555,8 @@ $(document).ready(function ()
     {
         $("#gPlacesSearch").on("click", function (event)
         {
+            event.preventDefault();
+
             $("#gPlacesLocation").removeClass("not-valid");
             $("#gPlacesState").removeClass("not-valid");
             $("#gPlacesRadius").removeClass("not-valid");
@@ -595,15 +605,31 @@ $(document).ready(function ()
                         placesBtn.attr("data-address", address)
 
                         let placesBox = $("<span>");
-                        placesBox.addClass("form-check-label mx-3");
+                        placesBox.addClass("form-check-label d-block border-bottom mx-3");
                         placesBox.append(name);
 
-                        let placesResult = $("<div>");
-                        placesResult.addClass("form-check");
+                        // address
+                        let addressBox = $("<span>");
+                        addressBox.addClass("form-check-label d-block mx-3");
+                        addressBox.append(address);
+                        // address
 
                         placesBtn.append(placesBtnIcon);
-                        placesResult.append(placesBtn);
-                        placesResult.append(placesBox);
+
+                        let buttonCol = $("<div>");
+                        buttonCol.addClass("col-md-2");
+                        buttonCol.append(placesBtn);
+
+                        let resultsCol = $("<div>");
+                        resultsCol.addClass("col-md-10 border-left");
+                        resultsCol.append(placesBox);
+                        resultsCol.append(addressBox);
+
+                        let placesResult = $("<div>");
+                        placesResult.addClass("row form-check result-block");
+
+                        placesResult.append(buttonCol);
+                        placesResult.append(resultsCol);
 
                         $("#gPlacesResults").append(placesResult);
 
@@ -640,29 +666,29 @@ $(document).ready(function ()
                                 deleteOptionBtn.append(deleteOptionIcon);
                                 questionDiv.append(deleteOptionBtn);
                                 questionDiv.append(questionBox);
+
                                 $("#questionOptions").append(questionDiv);
 
                                 deleteOptionBtn.on("click", function (event)
                                 {
-                                    //let surveyOption2 = ($(this).attr("data-username"));
-                                    //console.log(deleteUserNameBtn);
-
                                     //Returns the index of the user name in the array.
-                                    //Returns -1 if not found. 
-                                    let index = questionOptionsArr.indexOf(surveyOption);
-
-                                    //Should always be found but check just to be safe.
-                                    if (index >= 0)
+                                    //Returns -1 if not found.
+                                    for (let j = 0; j < questionOptionsArr.length; j++)
                                     {
-                                        questionOptionsArr.splice(index, 1);
-                                        //console.log(questionOptionsArr);
-                                        questionDiv.remove();
+                                        //console.log(questionOptionsArr[j]);
+
+                                        //Should always be found but check just to be safe.
+                                        if (questionOptionsArr[j].surveyOption === surveyOption)
+                                        {
+                                            questionOptionsArr.splice(j, 1);
+                                            //console.log(questionOptionsArr);
+                                            questionDiv.remove();
+                                        }
                                     }
                                 });
                             }
                         });
                     }
-
                 });
 
                 $("#gPlacesLocation").val("");
