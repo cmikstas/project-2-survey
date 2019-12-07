@@ -52,13 +52,18 @@ let showSurveys = function()
         let surveyTakerId   = userSurveys[i].id;
         let startTime       = userSurveys[i].Survey.startTime;
         let endTime         = userSurveys[i].Survey.stopTime;
-        let startMoment     = moment(startTime, "YYYY-MM-DD hh:mm:ss");
-        let endMoment       = moment(endTime,   "YYYY-MM-DD hh:mm:ss");
+        let utcStartMoment  = moment(startTime, "YYYY-MM-DD HH:mm:ss");
+        let utcEndMoment    = moment(endTime,   "YYYY-MM-DD HH:mm:ss");
         let thisMoment      = moment();
         let surveyTitle     = userSurveys[i].Survey.surveyTitle;
         let surveyOwner     = userSurveys[i].Survey.User.username;
         let surveyIsRead    = userSurveys[i].isRead;
         let surveyIsStarred = userSurveys[i].isStarred;
+
+        //Convert the stored UTC time to local time.
+        let offset  = moment().utcOffset();
+        startMoment = moment(utcStartMoment).add(offset, "minutes");
+        endMoment   = moment(utcEndMoment).add(offset, "minutes");
 
         //Create the main survey div.
         let surveyDiv = $("<div>");
@@ -77,17 +82,17 @@ let showSurveys = function()
         let startTimeDiv  = $("<div>");
         startTimeDiv.append("<b>Start Time: </b>");
         startTimeDiv.addClass("survey-info-div");
-        startTimeDiv.append(moment(startMoment).format("YYYY-MM-DD hh:mm:ss"));
+        startTimeDiv.append(moment(startMoment).format("YYYY-MM-DD HH:mm:ss"));
 
         //Create an end time div for certain surveys.
         let endTimeDiv  = $("<div>");
         endTimeDiv.append("<b>End Time: </b>");
         endTimeDiv.addClass("survey-info-div");
-        endTimeDiv.append(moment(endMoment).format("YYYY-MM-DD hh:mm:ss"));
+        endTimeDiv.append(moment(endMoment).format("YYYY-MM-DD HH:mm:ss"));
 
         //Calculate remaining time for the survey.
         let remaining = endMoment.diff(thisMoment);
-        let remainString = moment.utc(remaining).format("HH:mm:ss")
+        let remainString = moment.utc(remaining).format("HH:mm:ss");
 
         //Create a remaining time div for certain surveys.
         let remainDiv = $("<div>");

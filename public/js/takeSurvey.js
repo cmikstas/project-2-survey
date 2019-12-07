@@ -18,9 +18,13 @@ let map;
 //Update the remaining survey time and disable expired surveys.
 let updateTime = function()
 {
-    let endTime    = surveyData.survey[0].stopTime;
-    let endMoment  = moment(endTime, "YYYY-MM-DD hh:mm:ss");
-    let thisMoment = moment();
+    let endTime       = surveyData.survey[0].stopTime;
+    let utcEndMoment  = moment(endTime, "YYYY-MM-DD HH:mm:ss");
+    let thisMoment    = moment();
+
+    //Convert the stored UTC time to local time.
+    let offset  = moment().utcOffset();
+    endMoment   = moment(utcEndMoment).add(offset, "minutes");
 
     if(thisMoment > endMoment)
     {
