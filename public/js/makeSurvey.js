@@ -1,4 +1,5 @@
 let debug = true;
+let username = $(".navbar-user").attr("data-username");
 
 let userCommentsArr    = [];
 let surveyUserArr      = [];
@@ -36,6 +37,15 @@ $(document).ready(function ()
     $("#comment-text").addClass("not-valid");
     */
     
+    //Remove all markers from the map.
+    let removeAllMarkers = function()
+    {
+        for (let i = 0; i < markers.length; i++)
+        {
+            markers[i].setMap(null);
+        }
+    }
+
     //Show error message if something is wrong with the survey.
     let showErrorBox = function(errMessage)
     {
@@ -48,6 +58,19 @@ $(document).ready(function ()
             "<span aria-hidden=\"true\">&times;</span></button></div>"
         );
     }
+
+    //Clear results text area.
+    $("#clear-results").on("click", function(event)
+    {
+        $("#gPlacesResults").empty();
+    });
+
+    //Clear comments text area.
+    $("#clear-comments").on("click", function(event)
+    {
+        userCommentsArr = [];
+        $("#commentsDiv").empty();
+    });
 
     //This is the button that packs up the survey info and sends it to the server.
     $("#create-survey").on("click", function(event)
@@ -163,18 +186,39 @@ $(document).ready(function ()
         })
         .then(function(data)
         {
-            console.log("posted");
+            console.log("Survey posted");
 
+            //Remove all markers from the map.
+            removeAllMarkers();
 
+            //Delete all the data in the arrays.
+            userCommentsArr    = [];
+            surveyUserArr      = [];
+            questionOptionsArr = [];
+            surveyQuestionsArr = [];
+            totalQuestionsArr  = [];
+            mapSelectionArray  = [];
+            markers            = [];
 
+            //Clear all the text areas.
+            $("#surveyQuestion").val("");
+            $("#questionOptions").empty();
+            $("#gPlacesLocation").val("");
+            $("#gPlacesState").val("");
+            $("#gPlacesRadius").val("");
+            $("#gPlacesResults").empty();
+            $("#customQ").val("");
+            $("#surveyName").val("");
+            $("#start-time-text").val("");
+            $("#end-time-text").val("");
+            $("#surveyQuestionsDiv").empty();
+            $("#usersAdded").empty();
+            $("#distro-text").val("");
+            $("#commentsDiv").empty();
+            $("#comment-text").val("");
 
-
-
-
-
-
-
-
+            //Inform the user the survey was successfully created.
+            alert("Survey Created!");
         });
     });
 
@@ -355,13 +399,6 @@ $(document).ready(function ()
         });
     });
 
-
-
-
-
-
-
-
     $("#comment-btn").on("click", function (event)
     {
         event.preventDefault();
@@ -401,8 +438,8 @@ $(document).ready(function ()
         // Create a map centered in SLC.
         map = new google.maps.Map(document.getElementById('map'),
         {
-            center: { lat: 40.7608, lng: -111.8910 },
-            zoom: 9
+            center: { lat: 0, lng: 0 },
+            zoom: 0
         });
     }
 
@@ -484,7 +521,6 @@ $(document).ready(function ()
         });
     }
 
-    
     //Refersh the users list.
     $("#refresh-users").on("click", function (event)
     {
@@ -492,7 +528,6 @@ $(document).ready(function ()
         pullUsers();
     });
 
-   
     function addQuestion()
     {
         $("#addQ").on("click", function (event)
@@ -751,9 +786,6 @@ $(document).ready(function ()
                         let address = data[i].formatted_address;
                         let latLong = data[i].geometry.location;
                         let name = data[i].name;
-                        //console.log(address);
-                        //console.log(latLong);
-                        //console.log(name);
 
                         let placesBtnIcon = "+";
                         let placesBtn = $("<button>");
@@ -794,9 +826,7 @@ $(document).ready(function ()
                         placesBtn.on("click", function (event)
                         {
                             let surveyOption = ($(this).attr("data-username"));
-                            //console.log(surveyOption);
-                            let surveyAddress = ($(this).attr("data-address"))
-
+                            
                             if (!questionOptionsArr.includes(surveyOption))
                             {
                                 questionOptionsArr.push(
@@ -876,44 +906,61 @@ $(document).ready(function ()
         });
     }
 
+    //Calculate the center of a map
+    let centerMap = function()
+    {
+        let lat      = 0;
+        let lng      = 0;
+        let validLat = 0;
+        let validLng = 0;
+        let zoom     = 9;
+
+        //average all the latitudes and longitudes to find center of map.
+        for(let i = 0; i < markers.length; i++)
+        {
+            if(markers[i].position.lat() !== null)
+            {
+                lat += markers[i].position.lat();
+                validLat++;
+            }
+
+            if(markers[i].position.lng() !== null)
+            {
+                lng += markers[i].position.lng();
+                validLng++;
+            }
+        }
+
+        lat /= validLat;
+        lng /= validLng;
+
+        //Make sure there is valid coordinates to center the map.
+        if(isNaN(lat) || isNaN(lng))
+        {
+            lat  = 0;
+            lng  = 0;
+            zoom = 0;
+        }
+
+        map.panTo({lat: lat, lng: lng});
+        map.setZoom(zoom);
+    }
+
     // function to add a marker to google map
     function addMarker(mapSelectionObject)
     {
+        console.log(mapSelectionObject);
         // creates a marker and adds it to google maps
-        let thisMarker = new google.maps.Marker
-            ({
-                position: { lat: mapSelectionObject.lat, lng: mapSelectionObject.lng },
-                map: map,
-                name: mapSelectionObject.surveyOption,
-            });
-        //adds info window to click.
-
-        /** 
-        let contentString = '<div id="content">' +
-            '<div id="siteNotice">' +
-            '</div>' +
-            '<h1 id="firstHeading" class="firstHeading">' + selectionObject.name + '</h1>' +
-            '<div id="bodyContent">' +
-            '<ul>'
-            '<li>Rating: ' + selectionObject.rating + '</li>'
-            '<li>Total Reviews: ' + selectionObject.reviewCount + '</li>'
-            '<li>City: ' + selectionObject.city + '</li>';
-          
-        
-        let infowindow = new google.maps.InfoWindow(
-            {
-                content: contentString
-            });
-         
-    
-        thisMarker.addListener('click', function ()
+        let thisMarker = new google.maps.Marker(
         {
-            infowindow.open(map, thisMarker);
+            position: { lat: mapSelectionObject.lat, lng: mapSelectionObject.lng },
+            map: map,
+            title: mapSelectionObject.surveyOption
         });
-        */ 
-    
+        
         // adds a new marker to the markers array
         markers.push(thisMarker);
+        centerMap();
     }
 
     function removeMarker(mapSelectionObject)
@@ -922,7 +969,7 @@ $(document).ready(function ()
         {
             if
             (
-                markers[i].name === mapSelectionObject.name &&
+                markers[i].title === mapSelectionObject.name &&
                 markers[i].position.lat().toFixed(5) === mapSelectionObject.position.lat.toFixed(5) &&
                 markers[i].position.lng().toFixed(5) === mapSelectionObject.position.lng.toFixed(5)
             )
@@ -933,4 +980,39 @@ $(document).ready(function ()
             }
         }
     }
+
+    //Figure out how many surveys have not been read.
+    let calcUnread = function()
+    {
+        let unread = 0;
+        for(let i = 0; i < userSurveys.length; i++)
+        {
+            if(!userSurveys[i].isRead)
+            {
+                unread++;
+            }
+        }
+        $("#unread-div").text(unread);  
+    }
+
+    let getSurveys = function() 
+    {
+        //Grab all the surveys the user is a part of.
+        $.get("/api/usersurveys/" + username)
+        .then(function(data)
+        {
+            if(debug)console.log(data);
+            userSurveys = data;
+
+            //Calculate how many unread surveys there are.
+            calcUnread();
+        })
+        .fail(function(err)
+        {
+            throw err;
+        });
+    }
+
+    getSurveys();
+    setInterval(function(){getSurveys();}, 3000);
 });

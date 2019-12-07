@@ -99,7 +99,7 @@ let geoInitialize = function()
     let choices = surveyData.data.choices;
     let lat  = 0;
     let lng  = 0;
-    let zoom = 10;
+    let zoom = 9;
     let validLat = 0;
     let validLng = 0;
 
