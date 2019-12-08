@@ -13,7 +13,7 @@ let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 
 //Set Handlebars.
 let exphbs = require("express-handlebars");
@@ -38,7 +38,7 @@ require("./routes/test-routes.js")(app);
 //Sync sequelize models then start Express.
 db.sequelize.sync(
 {
-    force: true //Use this only to wipe the database clean!
+    //force: true //Use this only to wipe the database clean!
 })
 .then(function()
 {

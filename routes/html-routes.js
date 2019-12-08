@@ -74,7 +74,7 @@ module.exports = function(app)
         if (req.user)
         {
             let hbsObject = { user: req.user.username };
-            res.render("usersettings", hbsObject);
+            res.render("userSettings", hbsObject);
         }
         else
         {

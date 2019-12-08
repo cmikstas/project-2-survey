@@ -279,6 +279,8 @@ let updateSurveyResponses = function()
         //Check if there are any new responses.
         if(data.responseCount != lastResponses)
         {
+            if(debug)console.log("Updating Responses");
+
             //Update the response count.
             lastResponses = data.responseCount;
 
@@ -298,8 +300,14 @@ let updateSurveyResponses = function()
                         return element.SurveyChoiceId === choices[i].id;
                     })
 
+                    if(debug)console.log("Updating Tally");
+                    if(debug)console.log(responseArray);
+                    if(debug)console.log("Choices Array");
+                    if(debug)console.log(choices);
+
                     //Update the number of responses on the current choice.
-                    $("#data-choice-" + (i + 1)).text("(" + responseArray.length + ")");
+                    //$("#data-choice-" + (i + 1)).text("(" + responseArray.length + ")");
+                    $("#data-choice-" + choices[i].id).text("(" + responseArray.length + ")");
                 }
 
                 //Update the radio buttons that have been selected by the current user.
@@ -377,6 +385,14 @@ let getSurveyData = function()
     });
 }
 
+let chatAutoScroll = function()
+{
+    $('#comments-div').stop().animate(
+    {
+        scrollTop: $('#comments-div')[0].scrollHeight
+    }, 800);
+}
+
 //Check if there are any new comments.  If so, update them on the page.
 let updateComments = function()
 {
@@ -404,6 +420,7 @@ let updateComments = function()
                     $("#comments-div").append(commentText);
                 }
 
+                chatAutoScroll();
                 lastComments = numComments;
             })
             .fail(function(err)
