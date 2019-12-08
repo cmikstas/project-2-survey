@@ -210,7 +210,14 @@ footer
 
 .navbar-logout
 {
-    float: right;
-    color: #111111;
+    color: #afafaf;
     margin-right: 25px;
+}
+
+#unread-div
+{
+    display: inline-block;
+    margin-left: .5rem;
+    color: #771111;
+    font-weight: bold;
 }
