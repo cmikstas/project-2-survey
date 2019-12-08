@@ -399,6 +399,14 @@ $(document).ready(function ()
         });
     });
 
+    let chatAutoScroll = function()
+    {
+	    $('#commentsDiv').stop().animate(
+        {   
+            scrollTop: $('#commentsDiv')[0].scrollHeight
+        }, 800);
+    }
+
     $("#comment-btn").on("click", function (event)
     {
         event.preventDefault();
@@ -430,7 +438,7 @@ $(document).ready(function ()
         }
 
         userCommentsArr.push(commentDetails);
-        //console.log(userComments);
+        chatAutoScroll();
     });
 
     function geoInitialize()

@@ -385,6 +385,14 @@ let getSurveyData = function()
     });
 }
 
+let chatAutoScroll = function()
+{
+    $('#comments-div').stop().animate(
+    {
+        scrollTop: $('#comments-div')[0].scrollHeight
+    }, 800);
+}
+
 //Check if there are any new comments.  If so, update them on the page.
 let updateComments = function()
 {
@@ -412,6 +420,7 @@ let updateComments = function()
                     $("#comments-div").append(commentText);
                 }
 
+                chatAutoScroll();
                 lastComments = numComments;
             })
             .fail(function(err)
