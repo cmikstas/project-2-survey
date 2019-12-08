@@ -21,46 +21,48 @@
 
 <div id="page-body">
 <div class="container" style="display: flex; justify-content: space-between;">
+    <div class-"row">
+        <div class="col-md-12">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="survey-type" id="survey-all" value="all" checked>
+                <label class="form-check-label white-text" for="exampleRadios2">
+                    All Surveys
+                </label>
+            </div>
 
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="survey-type" id="survey-all" value="all" checked>
-        <label class="form-check-label white-text" for="exampleRadios2">
-            All Surveys
-        </label>
-    </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="survey-type" id="survey-active" value="active">
+                <label class="form-check-label white-text" for="exampleRadios1">
+                    Active Surveys
+                </label>
+            </div>
 
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="survey-type" id="survey-active" value="active">
-        <label class="form-check-label white-text" for="exampleRadios1">
-            Active Surveys
-        </label>
-    </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="survey-type" id="survey-expired" value="expired">
+                <label class="form-check-label white-text" for="exampleRadios2">
+                    Expired Surveys
+                </label>
+            </div>
 
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="survey-type" id="survey-expired" value="expired">
-        <label class="form-check-label white-text" for="exampleRadios2">
-            Expired Surveys
-        </label>
-    </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="survey-type" id="survey-starred" value="starred">
+                <label class="form-check-label white-text" for="exampleRadios2">
+                    Starred Surveys
+                </label>
+            </div>
 
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="survey-type" id="survey-starred" value="starred">
-        <label class="form-check-label white-text" for="exampleRadios2">
-            Starred Surveys
-        </label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="survey-type" id="survey-future" value="future">
+                <label class="form-check-label white-text" for="exampleRadios2">
+                    Future Surveys
+                </label>
+            </div>
+        </div>
     </div>
-
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="survey-type" id="survey-future" value="future">
-        <label class="form-check-label white-text" for="exampleRadios2">
-            Future Surveys
-        </label>
-    </div>
-    
 </div>
+
 <!-- This is where the surveys go -->
-    <div class="container py-1" id="surveys-div"></div>
-</div>
+<div class="container py-1" id="surveys-div"></div>
 
 <footer id="sticky-footer" class="pt-4 pb-1 mt-4">
     <div class="container text-center">
