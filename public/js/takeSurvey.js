@@ -276,6 +276,9 @@ let updateSurveyResponses = function()
     $.get("/api/numresponses/" + id)
     .then(function(data)
     {
+        //Always force an update.
+        lastResponses--;
+
         //Check if there are any new responses.
         if(data.responseCount != lastResponses)
         {
