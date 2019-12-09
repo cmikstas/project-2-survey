@@ -45,7 +45,7 @@ $(document).ready(function()
         })
         .then(function()
         {
-            window.location.replace("/home");  
+            window.location.assign("/home");  
         })
         .catch(function(err) //Catch an invalid user name or password.
         {
