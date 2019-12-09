@@ -1,111 +1,69 @@
-.email-message
-{
-    height: 50px;
-    text-align: left;
-    margin-bottom: 10px;
+.error-message {
+  height: 50px;
+  text-align: left;
+  margin-bottom: 10px;
 }
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: black;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Add padding to containers */
 #page-body .container {
-    padding: 16px;
-    background-color: white;
+  padding: 16px;
+  background-color: white;
 }
 
 /* Full-width input fields */
-input[type=text],
-input[type=password] {
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    display: inline-block;
-    border: none;
-    background: #f1f1f1;
+input[type='text'],
+input[type='password'] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
 }
 
-input[type=text]:focus,
-input[type=password]:focus {
-    background-color: #ddd;
-    outline: none;
+input[type='text']:focus,
+input[type='password']:focus {
+  background-color: #ddd;
+  outline: none;
 }
 
 /* Overwrite default styles of hr */
 hr {
-    border: 1px solid #f1f1f1;
-    margin-bottom: 25px;
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
 }
 
 /* Set a style for the submit button */
 .registerbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
 }
 
 .registerbtn:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* Add a blue text color to links */
 a {
-    color: dodgerblue;
+  color: dodgerblue;
 }
 
 /* Set a grey background color and center the text of the "sign in" section */
 .signin {
-    background-color: #f1f1f1;
-    text-align: center;
-}
-
-/******************************************** Navbar *********************************************/
-.navbar-header
-{
-    width: 100%;
-    border: 0;
-}
-
-.navbar-user
-{
-  display: inline;
-  font-size: 1rem;
-  color: #ffffff;
-}
-
-.navbar-logout
-{
-    float: right;
-    color: #111111;
-    margin-right: 25px;
-}
-
-#unread-div
-{
-    display: inline;
-}
-
-.navbar
-{
-    border: 0;
-    min-height: auto;
-    margin-bottom: 0;
-}
-
-#unread-div
-{
-    display: inline-block;
-    margin-left: .5rem;
-    color: #771111;
-    font-weight: bold;
+  background-color: #f1f1f1;
+  text-align: center;
 }

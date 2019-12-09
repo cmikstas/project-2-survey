@@ -6,11 +6,13 @@
 <link rel="stylesheet" href="/css/style.css" type="text/css" />
 <link rel="stylesheet" href="/css/makeSurveyStyle.css" type="text/css" />
 
-<nav class="navbar navbar-default bg-secondary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <div class="navbar-header">
-            <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! Unread Surveys:</div>
-            <div id="unread-div">0</div>
+            <div class="navbar-user" data-username="{{user}}">Hello, {{user}}! Unread Surveys:<div id="unread-div">0
+                </div>
+            </div>
+
             <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')"
                 href="/logout">
                 Logout
@@ -22,6 +24,36 @@
         </div>
     </div>
 </nav>
+
+<!--
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <div class="navbar-user navbar-brand" data-username="{{user}}">Hello, {{user}}! Unread Surveys:<div id="unread-div">0</div></div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')"
+                        href="/home">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="navbar-logout" onclick="return confirm('Any enterd survey data will be lost. Are you sure?')"
+                        href="/logout">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+-->
 
 <div class="page-title">
     <h1>Make New Survey</h1>
@@ -120,7 +152,8 @@
 
                 <div class="pt-2">
                     <p class="survey-info">Survey Questions</p>
-                    <div id="surveyQuestionsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;"></div>
+                    <div id="surveyQuestionsDiv" class="border rounded bg-light mt-2 mb-3" style="min-height: 300px;">
+                    </div>
                 </div>
             </div>
 
@@ -199,7 +232,7 @@
 
 <footer id="sticky-footer" class="pt-4 pb-1 mt-4">
     <div class="container text-center">
-        <small>&copy;Project 2</small>
+        <small>&copy;Nick Mikstas, Chris Mikstas, Sultan Kisana, Elijah Lanza</small>
     </div>
 </footer>
 
@@ -207,18 +240,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 
 <!--Google Maps-->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKxzOdcZqXI85LSaL_dfADOeeWELc9igc&libraries=places&callback=initMap"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKxzOdcZqXI85LSaL_dfADOeeWELc9igc&libraries=places&callback=initMap"></script>
 
 <!--Bootstrap-->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-</script>
+    </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-</script>
+    </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-</script>
+    </script>
 
 <!--jQuery-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -227,8 +261,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 
 <script type="text/javascript">
-    $(function ()
-    { 
+    $(function () {
         $('#start-time').datetimepicker();
         $('#end-time').datetimepicker();
     });
